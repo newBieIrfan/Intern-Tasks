@@ -1,0 +1,105 @@
+$header-color: #3399cc;
+$navbar-color: #333333;
+
+@mixin font-format($family,$weight:normal,$size:medium) {
+    font-family: $family;
+    font-weight: $weight;
+    font-size: $size;
+}
+
+@mixin center-element {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);    
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Levenim MT';
+    src: url('./fonts/LevenimMT.eot');
+    src: url('./fonts/LevenimMT.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/LevenimMT.woff2') format('woff2'),
+        url('./fonts/LevenimMT.woff') format('woff'),
+        url('./fonts/LevenimMT.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+header{
+    background-color: $header-color;
+    font-size: xx-large;
+    color: white;
+    padding: 50px;
+}
+
+#brand-name{
+    @include font-format(Levenim MT,$weight: 300);
+}
+
+nav{
+    background-color: $navbar-color;
+    padding: 5px 30px;
+    position: relative;
+    a{
+        text-decoration: none;
+        color: white;
+        @include font-format(Calibri,700,x-large);
+        box-sizing: border-box;
+        /* position: absolute; */
+        @include center-element;
+        /* height: 100%; */
+        padding: 0 20px;
+    }
+}
+
+#blog-icon{
+    float: right;
+    /* margin-left: auto; */
+    /* position: absolute; */
+    // @include center-element;
+}
+
+.content{
+    margin: 40px 70px;
+    p{
+        margin: 10px 0 20px 0;
+    }
+}
+
+#news{
+    border: 2px solid rgba(0,0,0,.2);
+    padding: 10px;
+    margin: 20px 0;
+    width: 60%;
+}
+
+#news-header{
+    @include font-format(Levenim MT,$weight: 600);
+}
+
+#news-text{
+    padding-left: 20px;
+    list-style-type: "-";
+    @include font-format(gadugi,normal,larger);
+    p{
+        margin-left: 10px;
+    }
+}
+
+#welcome{
+    width: 85%;
+    margin-top: 30px;
+}
+
+#welcome-header{
+    @include font-format(Arial,$weight: 500);
+}
+
+#welcome-text{
+    @include font-format(Calibri,$size: larger);
+}
