@@ -19,13 +19,13 @@ header{
     background-color: #3399CC;
     font-size: xx-large;
     color: white;
-    padding: 30px;
+    padding: 50px;
 }
 
 nav{
     background-color: #333333;
     padding: 5px 30px;
-    /* height: 40px; */
+    position: relative;
 }
 
 nav a{
@@ -35,6 +35,10 @@ nav a{
     font-weight: 700;
     font-size: x-large;
     box-sizing: border-box;
+    /* position: absolute; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     /* height: 100%; */
     padding: 0 20px;
 }
@@ -57,8 +61,11 @@ nav a{
 
 #blog-icon{
     float: right;
-    height: 30px;
-    width: 30px;
+    /* margin-left: auto; */
+    /* position: absolute; */
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%); */
 }
 
 .content{
