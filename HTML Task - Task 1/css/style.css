@@ -16,7 +16,7 @@ header {
   color: white;
   padding: 30px 40px; }
 
-#brand-name {
+.brand-name {
   font-family: Levenim MT;
   font-weight: 300; }
 
@@ -32,7 +32,7 @@ nav {
     font-size: x-large;
     padding: 0 20px; }
 
-#blog-icon {
+.blog-icon {
   float: right;
   position: absolute;
   height: 30px;
@@ -46,35 +46,35 @@ nav {
   .content p {
     margin-bottom: 20px; }
 
-#news {
+.news {
   border: 2px solid rgba(0, 0, 0, 0.2);
   padding: 10px;
   margin: 20px 0;
   width: 60%; }
 
-#news-header {
+.news-header {
   font-family: Levenim MT;
   font-weight: 600; }
 
-#news-text {
+.news-text {
   padding-left: 20px;
   list-style-type: "-";
   font-family: gadugi;
   font-weight: normal;
   font-size: larger; }
-  #news-text p {
+  .news-text p {
     margin-left: 10px; }
 
-#welcome {
+.welcome {
   width: 85%;
   margin-top: 40px; }
 
-#welcome-header {
+.welcome-header {
   font-family: Arial;
   font-weight: 500;
   margin-bottom: 15px; }
 
-#welcome-text {
+.welcome-text {
   font-family: Calibri;
   font-weight: normal;
   font-size: larger; }

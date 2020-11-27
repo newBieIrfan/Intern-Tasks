@@ -30,7 +30,7 @@ header{
     padding: 30px 40px;
 }
 
-#brand-name{
+.brand-name{
     @include font-format(Levenim MT,300);
 }
 
@@ -47,7 +47,7 @@ nav{
     }
 }
 
-#blog-icon{
+.blog-icon{
     float: right;
     position: absolute;
     height: 30px;
@@ -64,18 +64,18 @@ nav{
     }
 }
 
-#news{
+.news{
     border: 2px solid rgba(0,0,0,.2);
     padding: 10px;
     margin: 20px 0;
     width: 60%;
 }
 
-#news-header{
+.news-header{
     @include font-format(Levenim MT,600);
 }
 
-#news-text{
+.news-text{
     padding-left: 20px;
     list-style-type: "-";
     @include font-format(gadugi);
@@ -85,17 +85,17 @@ nav{
     }
 }
 
-#welcome{
+.welcome{
     width: 85%;
     margin-top: 40px;
 }
 
-#welcome-header{
+.welcome-header{
     @include font-format(Arial,500);
     margin-bottom: 15px;
 }
 
-#welcome-text{
+.welcome-text{
     @include font-format(Calibri);
     font-size: larger;
 }

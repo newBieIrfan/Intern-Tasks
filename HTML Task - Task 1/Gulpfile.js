@@ -6,11 +6,15 @@ var sass = require('gulp-sass');
 sass.compiler = require('node-sass');
  
 gulp.task('sass', function () {
-    return gulp.src('./css/*.scss')
+    return gulp.src('./scss/*.scss')
       .pipe(sass().on('error', sass.logError))
       .pipe(gulp.dest('./css'));
   });
   
   gulp.task('default', function () {
-    gulp.watch('./css/*.scss', ['sass']);
+    gulp.watch('./scss/*.scss', ['sass']);
   });
+  
+//   gulp.task('default', function() {
+//       gulp.task('sass:watch');
+//   });
