@@ -1,110 +1,80 @@
-*{
-    margin: 0;
-    padding: 0;
-}
+* {
+  margin: 0;
+  padding: 0; }
 
 @font-face {
-    font-family: 'Levenim MT';
-    src: url('./fonts/LevenimMT.eot');
-    src: url('./fonts/LevenimMT.eot?#iefix') format('embedded-opentype'),
-        url('./fonts/LevenimMT.woff2') format('woff2'),
-        url('./fonts/LevenimMT.woff') format('woff'),
-        url('./fonts/LevenimMT.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+  font-family: 'Levenim MT';
+  src: url("./fonts/LevenimMT.eot");
+  src: url("./fonts/LevenimMT.eot?#iefix") format("embedded-opentype"), url("./fonts/LevenimMT.woff2") format("woff2"), url("./fonts/LevenimMT.woff") format("woff"), url("./fonts/LevenimMT.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; }
 
-header{
-    background-color: #3399CC;
-    font-size: xx-large;
-    color: white;
-    padding: 50px;
-}
+header {
+  background-color: #3399cc;
+  font-size: xx-large;
+  color: white;
+  padding: 30px 40px; }
 
-nav{
-    background-color: #333333;
-    padding: 5px 30px;
-    position: relative;
-}
+#brand-name {
+  font-family: Levenim MT;
+  font-weight: 300; }
 
-nav a{
+nav {
+  background-color: #333333;
+  padding: 10px 20px;
+  position: relative; }
+  nav a {
     text-decoration: none;
     color: white;
     font-family: Calibri;
     font-weight: 700;
     font-size: x-large;
-    box-sizing: border-box;
-    /* position: absolute; */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    /* height: 100%; */
-    padding: 0 20px;
-}
+    padding: 0 20px; }
 
-/* nav a:hover{
-    background-color: #3399CC;
-} */
+#blog-icon {
+  float: right;
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: 50%;
+  right: 15px;
+  transform: translate(-50%, -50%); }
 
-#brand-name, #news-header{
-    font-family: Levenim MT;
-}
+.content {
+  margin: 30px 70px; }
+  .content p {
+    margin-bottom: 20px; }
 
-#brand-name{
-    font-weight: 300;
-}
+#news {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin: 20px 0;
+  width: 60%; }
 
-#news-header{
-    font-weight: 600;
-}
+#news-header {
+  font-family: Levenim MT;
+  font-weight: 600; }
 
-#blog-icon{
-    float: right;
-    /* margin-left: auto; */
-    /* position: absolute; */
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%); */
-}
+#news-text {
+  padding-left: 20px;
+  list-style-type: "-";
+  font-family: gadugi;
+  font-weight: normal;
+  font-size: larger; }
+  #news-text p {
+    margin-left: 10px; }
 
-.content{
-    margin: 40px 70px;
-}
+#welcome {
+  width: 85%;
+  margin-top: 40px; }
 
-#news{
-    border: 2px solid rgba(0,0,0,.2);
-    padding: 10px;
-    margin: 20px 0;
-    width: 60%;
-}
+#welcome-header {
+  font-family: Arial;
+  font-weight: 500;
+  margin-bottom: 15px; }
 
-#news-text{
-    padding-left: 20px;
-    list-style-type: "-";
-    font-family: gadugi;
-    font-size: larger;
-}
-
-#welcome{
-    width: 85%;
-    margin-top: 30px;
-}
-
-#welcome-header{
-    font-family: Arial;
-    font-weight: 500;
-}
-
-#welcome-text{
-    font-family: Calibri;
-    font-size: larger;
-}
-
-.content p{
-    margin: 10px 0 20px 0;
-}
-
-#news-text p{
-    margin-left: 10px;
-}
+#welcome-text {
+  font-family: Calibri;
+  font-weight: normal;
+  font-size: larger; }

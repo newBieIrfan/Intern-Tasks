@@ -1,16 +1,9 @@
 $header-color: #3399cc;
 $navbar-color: #333333;
 
-@mixin font-format($family,$weight:normal,$size:medium) {
+@mixin font-format($family,$weight:normal) {
     font-family: $family;
     font-weight: $weight;
-    font-size: $size;
-}
-
-@mixin center-element {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);    
 }
 
 *{
@@ -34,40 +27,40 @@ header{
     background-color: $header-color;
     font-size: xx-large;
     color: white;
-    padding: 50px;
+    padding: 30px 40px;
 }
 
 #brand-name{
-    @include font-format(Levenim MT,$weight: 300);
+    @include font-format(Levenim MT,300);
 }
 
 nav{
     background-color: $navbar-color;
-    padding: 5px 30px;
+    padding: 10px 20px;
     position: relative;
     a{
         text-decoration: none;
         color: white;
-        @include font-format(Calibri,700,x-large);
-        box-sizing: border-box;
-        /* position: absolute; */
-        @include center-element;
-        /* height: 100%; */
+        @include font-format(Calibri,700);
+        font-size: x-large;
         padding: 0 20px;
     }
 }
 
 #blog-icon{
     float: right;
-    /* margin-left: auto; */
-    /* position: absolute; */
-    // @include center-element;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    top: 50%;
+    right: 15px;
+    transform: translate(-50%,-50%);
 }
 
 .content{
-    margin: 40px 70px;
+    margin: 30px 70px;
     p{
-        margin: 10px 0 20px 0;
+        margin-bottom: 20px;
     }
 }
 
@@ -79,13 +72,14 @@ nav{
 }
 
 #news-header{
-    @include font-format(Levenim MT,$weight: 600);
+    @include font-format(Levenim MT,600);
 }
 
 #news-text{
     padding-left: 20px;
     list-style-type: "-";
-    @include font-format(gadugi,normal,larger);
+    @include font-format(gadugi);
+    font-size: larger;
     p{
         margin-left: 10px;
     }
@@ -93,13 +87,15 @@ nav{
 
 #welcome{
     width: 85%;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 #welcome-header{
-    @include font-format(Arial,$weight: 500);
+    @include font-format(Arial,500);
+    margin-bottom: 15px;
 }
 
 #welcome-text{
-    @include font-format(Calibri,$size: larger);
+    @include font-format(Calibri);
+    font-size: larger;
 }
