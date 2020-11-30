@@ -1,0 +1,379 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-image: url("../img/background12.png");
+    background-attachment: fixed;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header{
+    border-bottom: 1px solid gray;
+    height: 50px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+nav{
+    background-color: rgba(0,0,0,.2);
+    height: 30px;
+    margin: 3px 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+.container{
+    width: 75%;
+    margin: 0 auto;
+}
+
+.header-grid{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.brand-name{
+    height: 100%;
+}
+
+.header-div{
+    height: 100%;
+    font-size: 12px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 10px;
+}
+
+.header-div a{
+    color: gray;
+}
+
+.header-link{
+    border-right: 1px solid gray;
+    padding: 0 15px;
+}
+
+.last-header-link{
+    padding-left: 15px;
+}
+
+.cart{
+    display: inline;
+}
+
+.items-cost{
+    margin: 0 10px;
+}
+
+.nav-grid{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-links{
+    height: 100%;
+    display: flex;
+}
+
+.nav-links a{
+    padding: 0 25px;
+    border-right: 1px solid white;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nav-links :first-child{
+    padding: 0 25px 0 0;
+}
+
+.search{
+    display: flex;
+    align-items: center;
+}
+
+.search-form input{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    width: 200px;
+    border: 1px solid rgba(0,0,0,.3);
+    padding: 3px 6px;
+    margin-right: 5px;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4)
+}
+
+.navbar2{
+    height: 45px;
+    border: 1px solid gray;
+}
+
+.offers-div{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.div1{
+    display: flex;
+    align-items: center;
+}
+
+.circle{
+    margin: 0 15px;
+}
+
+.bridal-registry{
+    width: 265px;
+    display: flex;
+    align-items: center;
+}
+
+.bridal-registry img{
+    height: 100%;
+}
+
+.recipe{
+    display: grid;
+    grid-template-columns: 72% 28%;
+    border: 7px solid white;
+    height: 450px;
+    background: white;
+}
+
+.recipe-img{
+    height: inherit;
+}
+
+.recipe-img img{
+    height: inherit;
+    width: 100%;
+}
+
+.recipe-div{
+    background-color: #383735;
+    color: white;
+    padding: 8px;
+    border-left: 7px solid white;
+}
+
+.dress-table{
+    padding: 27px 22px;
+    border: 1px solid gray;
+}
+
+.dress-table-text{
+    padding: 10px 10px;
+    padding-right: 15px;
+}
+
+.dress-table-text h1{
+    font-weight: 400;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.dress-table-text p{
+    line-height: 25px;
+    color: darkgray;
+    font-size: 14px;
+}
+
+.table-styles{
+    padding: 10px 0;
+}
+
+.table-styles li{
+    list-style: none;
+    padding: 8px 10px;
+    border-bottom: 1px solid gray;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+.table-styles :last-child{
+    border: none;
+    padding-bottom: 0;
+}
+
+.recipe-div a{
+    color: darkgray;
+    font-size: 12px;
+    text-decoration: underline;
+    padding: 10px 10px;
+    margin-top: 10px;
+}
+
+.promo{
+    display: flex;
+    background-color: white;
+    border: 7px solid black;
+    height: 200px;
+}
+
+.promo-div{
+    position: relative;
+    width: 33%;
+}
+
+.promo-text{
+    position: absolute;
+    height: 160px;
+    padding: 20px;
+}
+
+.v1{
+    border-left: 1px solid gray;
+    width: .5%;
+    height: 85%;
+    margin: auto 0;
+}
+
+.promo-text-last{
+    width: 50%;
+    border: 0;
+}
+
+.promo-text h2{
+    font-size: medium;
+    line-height: 20px;
+    font-weight: 100;
+}
+
+.promo-text p{
+    font-size: 12px;
+    margin-top: 5px;
+    line-height: 20px;
+}
+
+.promo-text a{
+    float: right;
+    font-size: small;
+    margin-top: 15px;
+}
+
+.promo-text-last h2{
+    padding-right: 30px;
+}
+
+.promo-text-last a{
+    float: left;
+}
+
+.promo-img1{
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.promo-img1 img{
+    height: 100%;
+}
+
+.promo-img2{
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.promo-img2 img{
+    width: 100%;
+}
+
+.promo-img3{
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.promo-img3 img{
+    height: 100%;
+}
+
+.v1{
+    border-left: 1px solid gray;
+}
+
+.blue-link{
+    color: rgba(25, 66, 201, 0.877);
+}
+
+footer{
+    padding: 7px 0;
+    font-size: small;
+    color: gray;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+footer a{
+    color: gray;
+    text-decoration: underline;
+}
+
+.footer-link{
+    padding: 0 10px;
+    border-left: 1px solid gray;
+}
+
+.first-footer-link{
+    padding-right: 5px;
+}
+
+.contact{
+    margin-top: 10px;
+}
+
+.contact p{
+    margin-bottom: 7px;
+}
+
+.signup{
+    margin-top: 10px;
+}
+
+.form-div{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.signup-div{
+    width: fit-content;
+}
+
+.signup input{
+    font-family: 'Montserrat', sans-serif;
+    font-size: smaller;
+    width: 60%;
+    border: 1px solid rgba(0,0,0,.3);
+    padding: 3px 6px;
+    margin-right: 5px;
+}
+
+.form-button{
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,.3);
+    font-family: 'Montserrat', sans-serif;
+    font-size: small;
+    font-weight: 700;
+}
+
+.signup .form-button{
+    padding: 2px 6px;
+}
+
+.search-form .form-button{
+    padding: 1px 4px;
+}
