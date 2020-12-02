@@ -18,8 +18,6 @@ body{
 header{
     border-bottom: 1px solid lightgray;
     height: 50px;
-    /* padding-top: 10px; */
-    /* padding-bottom: 5px; */
 }
 
 nav{
@@ -49,7 +47,7 @@ a{
 
 .header-div{
     height: 100%;
-    font-size: 8px;
+    font-size: .5rem;
     box-sizing: border-box;
     display: flex;
     align-items: flex-end;
@@ -80,7 +78,6 @@ a{
 .nav-grid{
     height: 100%;
     display: flex;
-    /* justify-content: space-between; */
 }
 
 .nav-links{
@@ -96,7 +93,7 @@ a{
     display: flex;
     align-items: center;
     color: dimgray;
-    font-size: xx-small;
+    font-size: .6rem;
     font-weight: 600;
 }
 
@@ -105,9 +102,6 @@ a{
 }
 
 .search{
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: flex-end; */
     width: 25%;
 }
 
@@ -121,7 +115,7 @@ a{
 
 .search-form input{
     font-family: 'Montserrat', sans-serif;
-    font-size: 8px;
+    font-size: .5rem;
     width: 70%;
     border: 1px solid rgba(0,0,0,.3);
     padding: 2px 2px 1px 4px;
@@ -137,8 +131,7 @@ a{
 .offers-div{
     height: 100%;
     display: flex;
-    /* justify-content: space-between; */
-    font-size: 10px;
+    font-size: .625rem;
 }
 
 .div1{
@@ -162,17 +155,19 @@ a{
     height: 100%;
 }
 
+main{
+    height: 70%;
+    display: grid;
+    grid-template-rows: 70% 30%;
+}
+
 .recipe{
-    /* display: grid; */
-    /* grid-template-columns: 72% 28%; */
     border: 5px solid white;
-    height: 50%;
     background: white;
     display: flex;
 }
 
 .recipe-img{
-    /* height: -webkit-fill-available; */
     width: 70%;
     height: 100%;
 }
@@ -188,7 +183,6 @@ a{
     padding: 5px;
     border-left: 5px solid white;
     height: -webkit-fill-available;
-    /* height: 100%; */
     width: 30%;
 }
 
@@ -196,6 +190,9 @@ a{
     padding: 25px 15px;
     border: 1px solid dimgray;
     height: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .dress-table-text{
@@ -207,19 +204,17 @@ a{
 .dress-table-text h1{
     font-weight: 100;
     margin-bottom: 10px;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     color: whitesmoke;
 }
 
 .dress-table-text p{
     line-height: 20px;
     color: darkgray;
-    font-size: .65em;
+    font-size: .65rem;
 }
 
 .table-styles{
-    /* padding: 10px 0; */
-    /* padding-bottom: 10px; */
     color: whitesmoke;
     margin-bottom: 5px;
 }
@@ -228,34 +223,35 @@ a{
     list-style: none;
     padding: 5px 10px;
     border-bottom: 1px solid dimgray;
-    font-size: .7em;
-    /* font-weight: 100; */00; *;
+    font-size: .7rem;
 }
 
 .table-styles :last-child{
     border: none;
-    /* padding-bottom: 0; */
 }
 
 .recipe-div a{
     color: gray;
-    font-size: .6em;
+    font-size: .6rem;
     text-decoration: underline;
     padding: 10px 10px;
-    /* margin-top: 55px; */
 }
 
 .promo{
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
     background-color: white;
     border: 5px solid black;
-    /* height: 20%; */
+    display: flex;
 }
 
 .promo-div{
     position: relative;
-    height: inherit;
+    height: 100%;
+    width: 33%;
+    display: flex;
+}
+
+.promo2{
+    width: 34%;
 }
 
 .promo-text{
@@ -272,7 +268,6 @@ a{
 .promo-text-last{
     width: 50%;
     border: 0;
-    /* padding-right: 0; */
 }
 
 .promo-content{
@@ -281,20 +276,19 @@ a{
 }
 
 .promo-text h2{
-    font-size: .75em;
-    /* line-height: 20px; */
+    font-size: .75rem;
     font-weight: 100;
 }
 
 .promo-text p{
-    font-size: .5em;
+    font-size: .5rem;
     margin-top: 5px;
     line-height: 2em;
 }
 
 .promo-text a{
     float: right;
-    font-size: .65em;
+    font-size: 0.65rem;
     margin-top: 1em;
 }
 
@@ -311,6 +305,7 @@ a{
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
+    width: 100%;
 }
 
 .promo-img1 img{
@@ -322,6 +317,7 @@ a{
     height: 100%;
     display: flex;
     align-items: flex-end;
+    width: 100%;
 }
 
 .promo-img2 img{
@@ -334,6 +330,7 @@ a{
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    width: 100%;
 }
 
 .promo-img3 img{
@@ -347,7 +344,7 @@ a{
 
 footer{
     padding: 5px 0;
-    font-size: .5em;
+    font-size: .5rem;
     color: darkgray;
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -390,7 +387,7 @@ footer a{
 
 .signup input{
     font-family: 'Montserrat', sans-serif;
-    font-size: smaller;
+    font-size: .45rem;
     width: 60%;
     border: 1px solid rgba(0,0,0,.3);
     padding: 3px 6px;
@@ -401,7 +398,7 @@ footer a{
     border-radius: 5px;
     border: 1px solid rgba(0,0,0,.3);
     font-family: 'Montserrat', sans-serif;
-    font-size: xx-small;
+    font-size: .6rem;
     font-weight: 700;
 }
 
