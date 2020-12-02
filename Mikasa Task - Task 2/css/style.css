@@ -1,3 +1,8 @@
+html,body{
+    height: 100%;
+    overflow-x: hidden;
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -6,20 +11,21 @@
 body{
     background-image: url("../img/background12.png");
     background-attachment: fixed;
+    background-size: contain;
     font-family: 'Montserrat', sans-serif;
 }
 
 header{
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid lightgray;
     height: 50px;
-    padding-top: 10px;
-    padding-bottom: 5px;
+    /* padding-top: 10px; */
+    /* padding-bottom: 5px; */
 }
 
 nav{
     background-color: rgba(0,0,0,.2);
-    height: 30px;
-    margin: 3px 0;
+    height: 25px;
+    margin: 2px 0;
 }
 
 a{
@@ -43,7 +49,7 @@ a{
 
 .header-div{
     height: 100%;
-    font-size: 12px;
+    font-size: 8px;
     box-sizing: border-box;
     display: flex;
     align-items: flex-end;
@@ -68,75 +74,88 @@ a{
 }
 
 .items-cost{
-    margin: 0 10px;
+    margin: 0px 5px;
 }
 
 .nav-grid{
     height: 100%;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
 .nav-links{
     height: 100%;
     display: flex;
+    width: 75%;
 }
 
 .nav-links a{
-    padding: 0 25px;
+    padding: 0px 14px;
     border-right: 1px solid white;
     height: 100%;
     display: flex;
     align-items: center;
-    color: black;
-    font-size: 12px;
+    color: dimgray;
+    font-size: xx-small;
     font-weight: 600;
 }
 
 .nav-links :first-child{
-    padding: 0 25px 0 0;
+    padding: 0px 14px 0 0;
 }
 
 .search{
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: flex-end; */
+    width: 25%;
+}
+
+.search-form{
+    width: -webkit-fill-available;
+    height: 100%;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .search-form input{
     font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    width: 200px;
+    font-size: 8px;
+    width: 70%;
     border: 1px solid rgba(0,0,0,.3);
-    padding: 3px 6px;
+    padding: 2px 2px 1px 4px;
     margin-right: 5px;
-    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4)
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
 
 .navbar2{
-    height: 45px;
-    border: 1px solid gray;
+    height: 40px;
+    border: 1px solid lightgray;
 }
 
 .offers-div{
     height: 100%;
     display: flex;
-    justify-content: space-between;
-    font-size: 13px;
+    /* justify-content: space-between; */
+    font-size: 10px;
 }
 
 .div1{
     display: flex;
     align-items: center;
+    width: 75%;
 }
 
 .circle{
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 .bridal-registry{
-    width: 265px;
+    width: 25%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .bridal-registry img{
@@ -144,15 +163,18 @@ a{
 }
 
 .recipe{
-    display: grid;
-    grid-template-columns: 72% 28%;
-    border: 7px solid white;
-    height: 450px;
+    /* display: grid; */
+    /* grid-template-columns: 72% 28%; */
+    border: 5px solid white;
+    height: 50%;
     background: white;
+    display: flex;
 }
 
 .recipe-img{
-    height: inherit;
+    /* height: -webkit-fill-available; */
+    width: 70%;
+    height: 100%;
 }
 
 .recipe-img img{
@@ -163,107 +185,121 @@ a{
 .recipe-div{
     background-color: #383735;
     color: white;
-    padding: 8px;
-    border-left: 7px solid white;
+    padding: 5px;
+    border-left: 5px solid white;
+    height: -webkit-fill-available;
+    /* height: 100%; */
+    width: 30%;
 }
 
 .dress-table{
-    padding: 27px 22px;
-    border: 1px solid gray;
+    padding: 25px 15px;
+    border: 1px solid dimgray;
+    height: -webkit-fill-available;
 }
 
 .dress-table-text{
     padding: 10px 10px;
     padding-right: 15px;
+    margin-bottom: 5px;
 }
 
 .dress-table-text h1{
-    font-weight: 400;
-    margin-bottom: 15px;
-    font-size: 28px;
+    font-weight: 100;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    color: whitesmoke;
 }
 
 .dress-table-text p{
-    line-height: 25px;
+    line-height: 20px;
     color: darkgray;
-    font-size: 14px;
+    font-size: .65em;
 }
 
 .table-styles{
-    padding: 10px 0;
+    /* padding: 10px 0; */
+    /* padding-bottom: 10px; */
+    color: whitesmoke;
+    margin-bottom: 5px;
 }
 
 .table-styles li{
     list-style: none;
-    padding: 8px 10px;
-    border-bottom: 1px solid gray;
-    font-size: 14px;
-    font-weight: 100;
+    padding: 5px 10px;
+    border-bottom: 1px solid dimgray;
+    font-size: .7em;
+    /* font-weight: 100; */00; *;
 }
 
 .table-styles :last-child{
     border: none;
-    padding-bottom: 0;
+    /* padding-bottom: 0; */
 }
 
 .recipe-div a{
-    color: darkgray;
-    font-size: 12px;
+    color: gray;
+    font-size: .6em;
     text-decoration: underline;
     padding: 10px 10px;
-    margin-top: 10px;
+    /* margin-top: 55px; */
 }
 
 .promo{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
     background-color: white;
-    border: 7px solid black;
-    height: 200px;
+    border: 5px solid black;
+    /* height: 20%; */
 }
 
 .promo-div{
     position: relative;
-    width: 33%;
+    height: inherit;
 }
 
 .promo-text{
     position: absolute;
-    height: 160px;
-    padding: 20px;
-}
-
-.v1{
-    border-left: 1px solid gray;
-    width: .5%;
-    height: 85%;
-    margin: auto 0;
+    margin: 10px 0;
+    padding: 5px 15px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    border-right: 1px solid lightgray;
+    display: flex;
+    justify-content: center;
 }
 
 .promo-text-last{
     width: 50%;
     border: 0;
+    /* padding-right: 0; */
+}
+
+.promo-content{
+    width: fit-content;
+    height: -webkit-fill-available;
 }
 
 .promo-text h2{
-    font-size: medium;
-    line-height: 20px;
+    font-size: .75em;
+    /* line-height: 20px; */
     font-weight: 100;
 }
 
 .promo-text p{
-    font-size: 12px;
+    font-size: .5em;
     margin-top: 5px;
-    line-height: 20px;
+    line-height: 2em;
 }
 
 .promo-text a{
     float: right;
-    font-size: small;
-    margin-top: 15px;
+    font-size: .65em;
+    margin-top: 1em;
 }
 
 .promo-text-last h2{
-    padding-right: 30px;
+    padding-right: 15px;
 }
 
 .promo-text-last a{
@@ -279,6 +315,7 @@ a{
 
 .promo-img1 img{
     height: 100%;
+    width: 80%;
 }
 
 .promo-img2{
@@ -289,6 +326,7 @@ a{
 
 .promo-img2 img{
     width: 100%;
+    max-height: 100%;
 }
 
 .promo-img3{
@@ -300,26 +338,23 @@ a{
 
 .promo-img3 img{
     height: 100%;
-}
-
-.v1{
-    border-left: 1px solid gray;
+    width: 65%;
 }
 
 .blue-link{
-    color: rgba(25, 66, 201, 0.877);
+    color: rgb(63,74,136);
 }
 
 footer{
-    padding: 7px 0;
-    font-size: small;
-    color: gray;
+    padding: 5px 0;
+    font-size: .5em;
+    color: darkgray;
     display: grid;
     grid-template-columns: 2fr 1fr;
 }
 
 footer a{
-    color: gray;
+    color: darkgray;
     text-decoration: underline;
 }
 
@@ -329,7 +364,7 @@ footer a{
 }
 
 .first-footer-link{
-    padding-right: 5px;
+    padding-right: 10px;
 }
 
 .contact{
@@ -363,10 +398,10 @@ footer a{
 }
 
 .form-button{
-    border-radius: 6px;
+    border-radius: 5px;
     border: 1px solid rgba(0,0,0,.3);
     font-family: 'Montserrat', sans-serif;
-    font-size: small;
+    font-size: xx-small;
     font-weight: 700;
 }
 
@@ -375,5 +410,5 @@ footer a{
 }
 
 .search-form .form-button{
-    padding: 1px 4px;
+    padding: 1px 2px;
 }
