@@ -17,12 +17,12 @@ body{
 
 header{
     border-bottom: 1px solid lightgray;
-    height: 50px;
+    height: 7%;
 }
 
 nav{
     background-color: rgba(0,0,0,.2);
-    height: 25px;
+    height: 3.75%;
     margin: 2px 0;
 }
 
@@ -47,20 +47,29 @@ a{
 
 .header-div{
     height: 100%;
-    font-size: .5rem;
     box-sizing: border-box;
     display: flex;
     align-items: flex-end;
-    padding-bottom: 10px;
+    padding-bottom: 1.25%;
 }
 
-.header-div a{
+.header-links-div{
+    height: fit-content;
+    font-size: .5rem;
+}
+
+.header-links-div a{
     color: gray;
 }
 
 .header-link{
     border-right: 1px solid gray;
-    padding: 0 15px;
+    padding: 0 1rem;
+}
+
+.icon-cart{
+    height: .75rem;
+    width: .75rem;
 }
 
 .last-header-link{
@@ -87,18 +96,18 @@ a{
 }
 
 .nav-links a{
-    padding: 0px 14px;
+    padding: 0 2.5%;
     border-right: 1px solid white;
     height: 100%;
     display: flex;
     align-items: center;
     color: dimgray;
-    font-size: .6rem;
+    font-size: .55rem;
     font-weight: 600;
 }
 
 .nav-links :first-child{
-    padding: 0px 14px 0 0;
+    padding: 0px 2.5% 0 0;
 }
 
 .search{
@@ -118,13 +127,13 @@ a{
     font-size: .5rem;
     width: 70%;
     border: 1px solid rgba(0,0,0,.3);
-    padding: 2px 2px 1px 4px;
-    margin-right: 5px;
+    padding: 1.25% 2.5% 1% 2%;
+    margin-right: 3%;
     box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
 
 .navbar2{
-    height: 40px;
+    height: 5.25%;
     border: 1px solid lightgray;
 }
 
@@ -141,7 +150,7 @@ a{
 }
 
 .circle{
-    margin: 0 10px;
+    margin: 0 2%;
 }
 
 .bridal-registry{
@@ -168,7 +177,7 @@ main{
 }
 
 .recipe-img{
-    width: 70%;
+    width: 72%;
     height: 100%;
 }
 
@@ -178,52 +187,49 @@ main{
 }
 
 .recipe-div{
-    background-color: #383735;
+    background-color: #3C3B39;
     color: white;
     padding: 5px;
     border-left: 5px solid white;
     height: -webkit-fill-available;
-    width: 30%;
+    width: 28%;
 }
 
 .dress-table{
-    padding: 25px 15px;
     border: 1px solid dimgray;
     height: -webkit-fill-available;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    padding: 1.3em .8em;
 }
 
 .dress-table-text{
-    padding: 10px 10px;
-    padding-right: 15px;
-    margin-bottom: 5px;
+    padding: 0 .6em;
+    margin-bottom: .5em;
 }
 
 .dress-table-text h1{
     font-weight: 100;
-    margin-bottom: 10px;
+    margin-bottom: .5em;
     font-size: 1.3rem;
     color: whitesmoke;
 }
 
 .dress-table-text p{
-    line-height: 20px;
+    line-height: 1.2rem;
     color: darkgray;
-    font-size: .65rem;
+    font-size: 0.65rem;
 }
 
 .table-styles{
     color: whitesmoke;
-    margin-bottom: 5px;
+    padding: .25em;
+    margin-bottom: .5em;
 }
 
 .table-styles li{
     list-style: none;
-    padding: 5px 10px;
+    padding: .5em;
     border-bottom: 1px solid dimgray;
-    font-size: .7rem;
+    font-size: .65rem;
 }
 
 .table-styles :last-child{
@@ -231,10 +237,10 @@ main{
 }
 
 .recipe-div a{
-    color: gray;
-    font-size: .6rem;
+    color: darkgray;
+    font-size: 0.6rem;
     text-decoration: underline;
-    padding: 10px 10px;
+    padding: .25em 1em;
 }
 
 .promo{
@@ -256,8 +262,8 @@ main{
 
 .promo-text{
     position: absolute;
-    margin: 10px 0;
-    padding: 5px 15px;
+    margin: 3% 0;
+    padding: 2% 5%;
     width: -webkit-fill-available;
     height: -webkit-fill-available;
     border-right: 1px solid lightgray;
@@ -282,18 +288,18 @@ main{
 
 .promo-text p{
     font-size: .5rem;
-    margin-top: 5px;
-    line-height: 2em;
+    margin-top: 2%;
+    line-height: 1rem;
 }
 
 .promo-text a{
     float: right;
     font-size: 0.65rem;
-    margin-top: 1em;
+    margin-top: 5%;
 }
 
 .promo-text-last h2{
-    padding-right: 15px;
+    padding-right: 10%;
 }
 
 .promo-text-last a{
@@ -343,7 +349,7 @@ main{
 }
 
 footer{
-    padding: 5px 0;
+    padding: .5% 0;
     font-size: .5rem;
     color: darkgray;
     display: grid;
@@ -356,24 +362,24 @@ footer a{
 }
 
 .footer-link{
-    padding: 0 10px;
+    padding: 0 2%;
     border-left: 1px solid gray;
 }
 
 .first-footer-link{
-    padding-right: 10px;
+    padding-right: 2%;
 }
 
 .contact{
-    margin-top: 10px;
+    margin-top: 1.8%;
 }
 
 .contact p{
-    margin-bottom: 7px;
+    margin-bottom: .75%;
 }
 
 .signup{
-    margin-top: 10px;
+    margin-top: 2%;
 }
 
 .form-div{
@@ -390,8 +396,8 @@ footer a{
     font-size: .45rem;
     width: 60%;
     border: 1px solid rgba(0,0,0,.3);
-    padding: 3px 6px;
-    margin-right: 5px;
+    padding: 1.25% 2.5%;
+    margin-right: 2%;
 }
 
 .form-button{
@@ -403,9 +409,28 @@ footer a{
 }
 
 .signup .form-button{
-    padding: 2px 6px;
+    padding: .5% 1.5%;
 }
 
 .search-form .form-button{
-    padding: 1px 2px;
+    padding: 1% 1%;
+}
+
+
+@media screen and (min-width:1200px){
+    html{
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width:1350px) and (min-height:800px){
+    html{
+        font-size: 20px;
+    }
+}
+
+@media screen and (min-width:1920px){
+    html{
+        font-size: 40px;
+    }
 }
