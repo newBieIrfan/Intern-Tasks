@@ -1,5 +1,9 @@
-html,body{
-    height: 100%;
+html{
+    font-size: 20px;
+}
+
+html, body{
+    height: 100vh;
     overflow-x: hidden;
 }
 
@@ -46,7 +50,6 @@ a{
 }
 
 .header-div{
-    height: 100%;
     box-sizing: border-box;
     display: flex;
     align-items: flex-end;
@@ -67,21 +70,24 @@ a{
     padding: 0 1rem;
 }
 
+.cart{
+    position: relative;
+    padding-left: 1rem;
+}
+
 .icon-cart{
     height: .75rem;
     width: .75rem;
+    position: absolute;
+    bottom: 0;
 }
 
 .last-header-link{
     padding-left: 15px;
 }
 
-.cart{
-    display: inline;
-}
-
 .items-cost{
-    margin: 0px 5px;
+    margin-right: 5px;
 }
 
 .nav-grid{
@@ -165,7 +171,6 @@ a{
 }
 
 main{
-    height: 70%;
     display: grid;
     grid-template-rows: 70% 30%;
 }
@@ -179,6 +184,7 @@ main{
 .recipe-img{
     width: 72%;
     height: 100%;
+    border-right: 5px solid white;
 }
 
 .recipe-img img{
@@ -189,34 +195,35 @@ main{
 .recipe-div{
     background-color: #3C3B39;
     color: white;
-    padding: 5px;
-    border-left: 5px solid white;
+    padding: .3em;
     height: -webkit-fill-available;
     width: 28%;
+    display: flex;
 }
 
 .dress-table{
     border: 1px solid dimgray;
-    height: -webkit-fill-available;
-    padding: 1.3em .8em;
+    padding: 2em 1em;
+    padding-bottom: 1em;
+    width: 100%;
 }
 
 .dress-table-text{
     padding: 0 .6em;
-    margin-bottom: .5em;
+    margin-bottom: 0.75em;
 }
 
 .dress-table-text h1{
     font-weight: 100;
     margin-bottom: .5em;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: whitesmoke;
 }
 
 .dress-table-text p{
-    line-height: 1.2rem;
+    line-height: 1.25rem;
     color: darkgray;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
 }
 
 .table-styles{
@@ -227,9 +234,9 @@ main{
 
 .table-styles li{
     list-style: none;
-    padding: .5em;
+    padding: .6em;
     border-bottom: 1px solid dimgray;
-    font-size: .65rem;
+    font-size: .7rem;
 }
 
 .table-styles :last-child{
@@ -238,7 +245,7 @@ main{
 
 .recipe-div a{
     color: darkgray;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     text-decoration: underline;
     padding: .25em 1em;
 }
@@ -414,23 +421,4 @@ footer a{
 
 .search-form .form-button{
     padding: 1% 1%;
-}
-
-
-@media screen and (min-width:1200px){
-    html{
-        font-size: 18px;
-    }
-}
-
-@media screen and (min-width:1350px) and (min-height:800px){
-    html{
-        font-size: 20px;
-    }
-}
-
-@media screen and (min-width:1920px){
-    html{
-        font-size: 40px;
-    }
 }
