@@ -45,6 +45,11 @@ a{
     height: 100%;
 }
 
+.brand-div{
+    position: relative;
+    right: 1%;
+}
+
 .brand-name{
     height: 100%;
 }
@@ -420,5 +425,5 @@ footer a{
 }
 
 .search-form .form-button{
-    padding: 1% 1%;
+    padding: .5% 1%;
 }
