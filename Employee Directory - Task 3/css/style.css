@@ -31,7 +31,7 @@ body{
 header{
     height: 100px;
     padding-top: 20px;
-    border-bottom: 1px solid gray;
+    border-bottom: 2px solid #E9E8E8;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -210,17 +210,15 @@ label{
     font-size: 15px;
     margin-left: 10px;
     outline: none;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #clear-button{
     background-color: #69BA00;
-    color: white;
     font-size: 14px;
-    border: none;
     padding: 10px 30px;
-    /* height: 100%; */
     margin: 0 20px;
-    outline: none;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #property-filter{
@@ -228,6 +226,7 @@ label{
     padding: 7px 10px;
     font-size: 16px;
     width: 180px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #open-add-modal{
@@ -235,6 +234,7 @@ label{
     font-weight: 600;
     width: fit-content;
     padding: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .note{
@@ -254,19 +254,19 @@ label{
 
 .employee{
     display: flex;
-    background-color: lightgray;
+    background-color:#E9E8E8;
     padding: 10px;
 }
 
-.employee-img{
+.card-img{
     height: 90px;
 }
 
-.employee-card{
+.card{
     padding-left: 10px;
 }
 
-.employee-name{
+.card-name{
     margin-bottom: 5px;
 }
 
@@ -301,11 +301,15 @@ label{
     transform: translate(-50%,-50%);
     background-color: white;
     border: 1px solid black;
-    padding: 20px;
+    padding: 25px;
+    border: none;
 }
 
 .modal-title{
-    font-size: 28px;
+    font-size: 30px;
+    /* padding: 10px; */
+    margin-bottom: 10px;
+    color: #10b6fc;
 }
 
 .close {
@@ -331,4 +335,125 @@ label{
     height: 100%;
     width: 100%;
     opacity: 0;
+}
+
+.form-div{
+    /* display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between; */
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    /* column-gap: 15px; */
+    margin-bottom: 20px;
+}
+
+.input-div{
+    margin-right: 15px;
+}
+
+.form-label{
+    font-size: 16px;
+}
+
+.form-input{
+    display: block;
+    /* border: none; */
+    outline: none;
+    border: 1px solid gray;
+    margin-top: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 5px;
+    /* width: 100%; */
+}
+
+.form-btn{
+    padding: 5px 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+}
+
+.professional-details{
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.details-div{
+    margin-left: 20px;
+    border-bottom: 1px solid gray;
+}
+
+.employee-name{
+    font-size: 35px;
+}
+
+.job-details{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    column-gap: 25px;
+    margin-top: 15px;
+}
+
+.personal-details{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    margin-bottom: 10px;
+}
+
+.name-details{
+    display: grid;
+    row-gap: 10px;
+}
+
+.property-name{
+    color: #10B6FC;
+    font-size: 14px;
+}
+
+
+.contact-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#modal-div i{
+    margin-right: 5px;
+}
+
+.employee-img{
+    height: 110px;
+}
+
+#cancel-button{
+    margin-left: 5px;
+}
+
+.err-msg{
+    color: red;
+    display: none;
+}
+
+.popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 5%;
+    right: 0;
+    z-index: 1;
+    background-color: white;
+    width: 175px;
+    height: 50px;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+#saved-popup{
+    border-left: 10px solid #10B6FC;
+}
+
+#updated-popup{
+    border-left: 10px solid #69BA00;;
 }

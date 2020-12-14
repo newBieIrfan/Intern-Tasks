@@ -12,34 +12,25 @@ const propertyFilter = document.getElementById("property-filter");
 const alphabetSearch = document.getElementById("alphabet-search");
 const departmentFilter = document.getElementById("department-filter");
 const officeFilter = document.getElementById("office-filter");
+const jobTitleFilter = document.getElementById("job-title-filter");
 var alphabet="";
 var department="";
 var office="";
-// var jobTitle=""
+var jobTitle=""
 
 document.addEventListener('DOMContentLoaded',() => {
     const employees = getEmployees();
+    displayAlphabetSearchDiv();
     displayEmployees(employees);
+    displayDepartments();
+    displayOffices();
+    displayJobTitles();
 });
-
-document.addEventListener('DOMContentLoaded',() => {
-    const departments = getDepartments();
-    displayDepartments(departments);
-});
-
-document.addEventListener('DOMContentLoaded',() => {
-    const offices = getOffices();
-    displayOffices(offices);
-});
-
-// document.addEventListener('DOMContentLoaded',() => {
-//     const jobTitles = getJobTitles();
-//     displayJobTitles(jobTitles);
-// });
 
 openAddModalBtn.addEventListener('click',(e) => {
     // console.log(e.target.value);
     // console.log("button clicked");
+    createAddForm();
     modal.style.display = "block";
 });
 
@@ -64,10 +55,69 @@ addForm.addEventListener('submit',(e) => {
     e.preventDefault();
     // console.log(e);
     // console.log(addForm.firstName.value,addForm.lastName.value,addForm.email.value,addForm.jobTitle.value,addForm.office.value,addForm.department.value,addForm.phoneNumber.value,addForm.skypeId.value);
-    createEmployee(addForm.firstName.value,addForm.lastName.value,
-        addForm.email.value,addForm.jobTitle.value,addForm.office.value,
-        addForm.department.value,addForm.phoneNumber.value,addForm.skypeId.value);
-    addForm.reset();
+    let firstName = addForm.firstName.value.trim();
+    let lastName = addForm.lastName.value.trim()
+    let email = addForm.email.value.trim();
+    let jobTitle = addForm.jobTitle.value.trim();
+    let office = addForm.office.value.trim();
+    let department = addForm.department.value.trim();
+    let phoneNumber = addForm.phoneNumber.value.trim();
+    let skypeId = addForm.skypeId.value.trim();
+    
+    let flag=true;
+    if (firstName.length === 0){
+        document.getElementById("firstname-error").style.display="block";
+        addForm.firstName.value = firstName;
+        addForm.firstName.focus();
+        flag=false;
+    } else{
+        document.getElementById("firstname-error").style.display="none";
+    }
+    if (lastName.length === 0){
+        document.getElementById("lastname-error").style.display="block";
+        addForm.lastName.value = lastName;
+        addForm.lastName.focus();
+        flag=false;
+    } else{
+        document.getElementById("lastname-error").style.display="none";
+    }
+    if (email.length === 0){
+        document.getElementById("email-error").style.display="block";
+        addForm.email.value = email;
+        addForm.email.focus();
+        flag=false;
+    } else{
+        document.getElementById("email-error").style.display="none";
+    }
+    if(phoneNumber.length !== 10){
+        document.getElementById("phone-no-error").style.display="block";
+        addForm.phoneNumber.value = phoneNumber;
+        addForm.phoneNumber.focus();
+        flag=false;
+    } else{
+        document.getElementById("phone-no-error").style.display="none";
+    }
+    if(skypeId.length !== 8){
+        document.getElementById("skype-id-error").style.display="block";
+        addForm.skypeId.value = skypeId;
+        addForm.skypeId.focus();
+        flag=false;
+    } else{
+        document.getElementById("skype-id-error").style.display="none";
+    }
+
+    if(flag){
+        createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
+        const div = document.createElement("div");
+        div.classList.add("popup")
+        div.id="saved-popup"
+        div.innerHTML=`<p>Saved</p>`
+        body = document.getElementsByTagName("body")[0];
+        body.appendChild(div);
+        setTimeout(() => div.remove(),3000);
+        addForm.reset();
+    }
+
 });
 
 inputSearch.addEventListener("input",(e) => {
@@ -101,6 +151,11 @@ departmentFilter.addEventListener("change",(e)=>{
 officeFilter.addEventListener("change",(e)=>{
     // console.log(e.target.value);
     office=e.target.value;
+    searchAndFilterEmployees();
+})
+
+jobTitleFilter.addEventListener("change",(e) => {
+    jobTitle=e.target.value;
     searchAndFilterEmployees();
 })
 
@@ -149,7 +204,8 @@ function getDepartments(){
             "IT": 0,
             "HR": 0,
             "MD": 0,
-            "Sales": 0
+            "Sales": 0,
+            "UX": 0
         };
     } else {
         return JSON.parse(localStorage.getItem('departments'));
@@ -177,7 +233,20 @@ function setOffices(offices){
 
 function getJobTitles(){
     if(localStorage.getItem('jobTitles') === null){
-        return [];
+        return {
+            "SharePoint Practice Head": 0,
+            "Operations Manager": 0,
+            "Product Manager": 0,
+            "Lead Engineer - Dot Net": 0,
+            "Network Engineer": 0,
+            "Talent Manager Jr.": 0,
+            "Software Engineer": 0,
+            "UI Designer": 0,
+            ".Net Development Lead": 0,
+            "Recruiting Expert": 0,
+            "BI Developer": 0,
+            "Business Analyst": 0
+        };
     } else {
         return JSON.parse(localStorage.getItem('jobTitles'));
     }
@@ -187,6 +256,16 @@ function setJobTitles(jobTitles){
     localStorage.setItem("jobTitles",JSON.stringify(jobTitles));
 }
 
+function displayAlphabetSearchDiv(){
+    const div = document.getElementById("alphabet-search");
+    let r;
+    for(let i=65;i<=90;i++){
+        const d = document.createElement("div");
+        r=String.fromCharCode(i);
+        d.innerHTML=`<input type="radio" name="alphabet" class="alphabet-radio" value="${r}" id="${r}"><label for="${r}" class="blue-btn alphabet">${r}</label></div>`;
+        div.appendChild(d);
+    }
+}
 
 function addEmployee(newEmployee){
     const employees = getEmployees();
@@ -200,10 +279,20 @@ function addEmployee(newEmployee){
     temp = getOffices();
     temp[newEmployee.office]+=1;
     setOffices(temp);
+
+    temp = getJobTitles();
+    temp[newEmployee.jobTitle]+=1;
+    setJobTitles(temp);
+
+    displayDepartments();
+    displayOffices();
+    displayJobTitles();
+    searchAndFilterEmployees();
 }
 
 function displayEmployees(employees){
     employeeGrid.innerHTML="";
+    let name;
     employees.forEach(employee => {
         const employeeDiv = document.createElement('div');
         employeeDiv.classList.add("employee-div");
@@ -217,13 +306,19 @@ function displayEmployees(employees){
             displayEmployeeDetails(e.target.id);
         })
 
+        if(employee.preferredName.length>20){
+            name = employee.firstName;
+        } else {
+            name = employee.preferredName;
+        }
+
         const employeeCard = document.createElement('div');
         employeeCard.classList.add('employee');
-        employeeCard.innerHTML=`<img class="employee-img" src="./img/user_icon.jpg" alt="employee_img">
-                                <div class="employee-card">
-                                    <h3 class="employee-name">${employee.preferredName}</h3>
-                                    <p class="employee-job-title">${employee.jobTitle}</p>
-                                    <p class="employee-department">${employee.department} Department</p>
+        employeeCard.innerHTML=`<img class="card-img" src="./img/user_icon.jpg" alt="employee_img">
+                                <div class="card">
+                                    <h3 class="card-name">${name}</h3>
+                                    <p class="card-job-title">${employee.jobTitle}</p>
+                                    <p class="card-department">${employee.department} Department</p>
                                     <div class="icon-div"><i class="fas fa-phone-square-alt" aria-hidden="true"></i><i class="fas fa-envelope" aria-hidden="true"></i><i class="fas fa-comment" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-heart" aria-hidden="true"></i></div>
                                 </div>`
 
@@ -243,111 +338,311 @@ function displayEmployeeDetails(employeeId){
     // console.log(employeeModal);
 
     const modalDiv = document.getElementById("modal-div");
-    modalDiv.innerHTML="";
-
-    const employeeDetails = document.createElement("div");
-    employeeDetails.innerHTML = `<p>${employee.firstName}</p>
-                                <p>${employee.lastName}</p>
-                                <p>${employee.preferredName}</p>
-                                <p>${employee.department}</p>
-                                <p>${employee.jobTitle}</p>
-                                <p>${employee.office}</p>
-                                <p>${employee.email}</p>
-                                <p>${employee.skypeId}</p>
-                                <p>${employee.phoneNumber}</p>`
+    modalDiv.innerHTML = `<div class="professional-details">
+                            <img class="employee-img" src="./img/user_icon.jpg" alt="employee_img">
+                            <div class="details-div">
+                                <h3 class="employee-name">${employee.preferredName}</h3>
+                                <div class="job-details">
+                                    <div class="property">
+                                        <p class="property-name">Job Title</p>
+                                        <p class="property-value">${employee.jobTitle}</p>
+                                    </div>
+                                    <div class="property">
+                                        <p class="property-name">Department</p>
+                                        <p class="property-value">${employee.department} Department</p>
+                                    </div>
+                                    <div class="property">
+                                        <p class="property-name">Office</p>
+                                        <p class="property-value"><i class="fas fa-map-marker-alt property-name"></i>${employee.office}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="personal-details">
+                            <div class="name-details">
+                                <div class="property">
+                                    <p class="property-name">First Name</p>
+                                    <p class="property-value">${employee.firstName}</p>
+                                </div>
+                                <div class="property">
+                                    <p class="property-name">Last Name</p>
+                                    <p class="property-value">${employee.lastName}</p>
+                                </div>
+                            </div>
+                            <div class="contact-details">
+                                <p class="property-value"><i class="fas fa-envelope property-name" aria-hidden="true"></i>${employee.email}</p>
+                                <p class="property-value"><i class="fab fa-skype property-name"></i>${employee.skypeId}</p>
+                                <p class="property-value"><i class="fas fa-phone-square-alt property-name" aria-hidden="true"></i></i>${employee.phoneNumber}</p>
+                            </div>
+                        </div>`
     const editBtn = document.createElement("button")
     editBtn.innerText="Edit"
     editBtn.classList.add("blue-btn");
+    editBtn.classList.add("form-btn");
     editBtn.addEventListener('click', () => {
         modalDiv.innerHTML=""
         const form = editForm(employee);
         modalDiv.appendChild(form);
     });
-    employeeDetails.appendChild(editBtn);
-    modalDiv.appendChild(employeeDetails);
+    modalDiv.appendChild(editBtn);
+}
+
+function createAddForm(){
+    let str=`<div class="form-div">
+                <div class="input-div">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <input type="text" placeholder="ex: John" id="firstname" name="firstName" class="form-input" required>
+                    <p id="firstname-error" class="err-msg">First name should not be empty</p>
+                </div>
+                <div class="input-div">
+                    <label for="lastname" class="form-label">Last Name</label>
+                    <input type="text" placeholder="ex: Doe" id="lastname" name="lastName" class="form-input" required>
+                    <p id="lastname-error" class="err-msg">Last name should not be empty</p>
+                </div>
+            </div>`
+    const div = document.createElement("div");
+    div.classList.add("form-div")
+
+    const div2 = document.createElement("div");
+    div2.classList.add("form-div")
+
+    const jobs = document.createElement("div");
+    jobs.classList.add("input-div")
+    jobs.innerHTML=`<label for="job-title" class="form-label">Office</label>`;
+    const jobSelect = document.createElement("select");
+    jobSelect.id="job-title";
+    jobSelect.name="jobTitle";
+    jobSelect.classList.add("form-input");
+    jobSelect.classList.add("form-input-select");
+    jobSelect.required=true;
+    let c=1;
+    for(key in getJobTitles()){
+        // console.log("here");
+        if(c===1){
+            jobSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            c+=1;
+        } else {
+            jobSelect.innerHTML+=`<option value="${key}">${key}</option>`
+        }
+    }
+    
+    // console.log(offSelect);
+    jobs.appendChild(jobSelect);
+    jobs.innerHTML+=`<p id="job-title-error" class="err-msg">Select a valid job title</p>`
+    // console.log(off);
+    div.appendChild(jobs);
+
+    const dept = document.createElement("div");
+    dept.classList.add("input-div");
+    dept.innerHTML=`<label for="department" class="form-label">Department</label>`
+    const deptSelect = document.createElement("select");
+    deptSelect.id="department";
+    deptSelect.name="department";
+    deptSelect.classList.add("form-input");
+    deptSelect.classList.add("form-input-select");
+    deptSelect.required=true;
+    c=1;
+    for(key in getDepartments()){
+        // console.log("here");
+        if(c===1){
+            deptSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            // console.log("now here");
+            c+=1;
+        } else {
+            deptSelect.innerHTML+=`<option value="${key}">${key}</option>`;
+            // console.log("Also here");
+        }
+    }
+    // console.log(deptSelect)
+    dept.appendChild(deptSelect);
+    dept.innerHTML+=`<p id="department-error" class="err-msg">Select a valid department</p>`
+    // console.log(dept);
+    div.appendChild(dept);
+
+    const off = document.createElement("div");
+    off.classList.add("input-div")
+    off.innerHTML=`<label for="office" class="form-label">Office</label>`;
+    const offSelect = document.createElement("select");
+    offSelect.id="office";
+    offSelect.name="office";
+    offSelect.classList.add("form-input");
+    offSelect.classList.add("form-input-select");
+    offSelect.required=true;
+    c=1;
+    for(key in getOffices()){
+        if(c===1){
+            offSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            c+=1;
+        } else {
+            offSelect.innerHTML+=`<option value="${key}">${key}</option>`
+        }
+    }
+    
+    // console.log(offSelect);
+    off.appendChild(offSelect);
+    off.innerHTML+=`<p id="office-error" class="err-msg">Select a valid office</p>`
+    // console.log(off);
+    div2.appendChild(off);
+    div2.innerHTML+=`<div class="input-div">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" placeholder="example@abc.com" id="email" name="email" class="form-input" required>
+                        <p id="email-error" class="err-msg">Enter a valid email</p>
+                    </div>`
+
+    // console.log(div);
+
+    str+=div.outerHTML;
+    str+=div2.outerHTML;
+
+    str+=`<div class="form-div">
+            <div class="input-div">
+                <label for="phone-no" class="form-label">Phone No.</label>
+                <input type="number" placeholder="10 digit number" id="phone-no" name="phoneNumber" class="form-input" required>
+                <p id="phone-no-error" class="err-msg">Enter a valid 10 digit phone number</p>
+            </div>
+            <div class="input-div">
+                <label for="skype-id" class="form-label">Skype Id</label>
+                <input type="number" placeholder="Your skype ID" id="skype-id" name="skypeId" class="form-input" required>
+                <p id="skype-id-error" class="err-msg">Enter a valid 8 digit skype id</p>
+            </div>
+        </div>
+        <button type="submit" class="blue-btn form-btn">Save</button>`
+
+    addForm.innerHTML=`${str}`
+    
+    const cancelBtn = document.createElement("button");
+    cancelBtn.type="reset"
+    cancelBtn.classList.add("blue-btn");
+    cancelBtn.classList.add("form-btn");
+    cancelBtn.id="cancel-button";
+    cancelBtn.innerText="Cancel"
+
+    cancelBtn.addEventListener('click',() => {
+        modal.style.display = "none";
+    });
+
+    addForm.appendChild(cancelBtn);
+
 }
 
 function editForm(employee){
     const form = document.createElement("form");
     form.id="employee-edit-form";
-    let str=`<div>
-                <div>
-                    <label for="firstname">First Name</label>
-                    <input type="text" placeholder="First Name" id="firstname" name="firstName" value="${employee.firstName}" required>
+    let str=`<div class="form-div">
+                <div class="input-div">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <input type="text" placeholder="ex: John" id="firstname" name="firstName" class="form-input" value="${employee.firstName}" required>
+                    <p id="editform-firstname-error" class="err-msg">First name should not be empty</p>
                 </div>
-                <div>
-                    <label for="lastname">Last Name</label>
-                    <input type="text" placeholder="Last Name" id="lastname" name="lastName" value="${employee.lastName}" required>
-                </div>
-                <div>
-                    <label for="email">Email</label>
-                    <input type="email" placeholder="example@abc.com" id="email" name="email" value="${employee.email}" required>
+                <div class="input-div">
+                    <label for="lastname" class="form-label">Last Name</label>
+                    <input type="text" placeholder="ex: Doe" id="lastname" name="lastName" class="form-input" value="${employee.lastName}" required>
+                    <p id="editform-lastname-error" class="err-msg">Last name should not be empty</p>
                 </div>
             </div>`
     const div = document.createElement("div");
-    div.innerHTML=`<div>
-                        <label for="job-title">Job Title</label>
-                        <!-- <select name="jobTitle" id="job-title"></select> -->
-                        <input type="text" placeholder="Job Title" id="job-title" name="jobTitle" value="${employee.jobTitle}" required>
-                    </div>`
+    div.classList.add("form-div")
+    // div.innerHTML=`<div class="input-div">
+    //                     <label for="job-title" class="form-label">Job Title</label>
+    //                     <!-- <select name="jobTitle" id="job-title"></select> -->
+    //                     <input type="text" placeholder="Job Title" id="job-title" name="jobTitle" class="form-input form-input-select" value="${employee.jobTitle}" required>
+    //                 </div>`
+
+    const div2 = document.createElement("div");
+    div2.classList.add("form-div")
+
+    const jobs = document.createElement("div");
+    jobs.classList.add("input-div")
+    jobs.innerHTML=`<label for="job-title" class="form-label">Office</label>`;
+    const jobSelect = document.createElement("select");
+    jobSelect.id="job-title";
+    jobSelect.name="jobTitle";
+    jobSelect.classList.add("form-input");
+    jobSelect.classList.add("form-input-select");
+    jobSelect.required=true;
+    for(key in getJobTitles()){
+        if(key === employee.jobTitle){
+            jobSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`
+        } else{
+            jobSelect.innerHTML+=`<option value="${key}">${key}</option>`
+        }
+    }
+    
+    // console.log(offSelect);
+    jobs.appendChild(jobSelect);
+    jobs.innerHTML+=`<p id="editform-job-title-error" class="err-msg">Select a valid job title</p>`
+    // console.log(off);
+    div.appendChild(jobs);
 
     const dept = document.createElement("div");
-    dept.innerHTML=`<label for="department">Department</label>`
+    dept.classList.add("input-div");
+    dept.innerHTML=`<label for="department" class="form-label">Department</label>`
     const deptSelect = document.createElement("select");
     deptSelect.id="department";
     deptSelect.name="department";
+    deptSelect.classList.add("form-input");
+    deptSelect.classList.add("form-input-select");
     deptSelect.required=true;
     for(key in getDepartments()){
-        const option = document.createElement("option");
         if(key === employee.department){
-            option.innerHTML=`<option value="${key}" selected>${key}</option>`
+            deptSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            option.innerHTML=`<option value="${key}">${key}</option>`
+            deptSelect.innerHTML+=`<option value="${key}">${key}</option>`
         }
-        deptSelect.appendChild(option);
     }
     // console.log(deptSelect)
     dept.appendChild(deptSelect);
+    dept.innerHTML+=`<p id="editform-department-error" class="err-msg">Select a valid department</p>`
     // console.log(dept);
     div.appendChild(dept);
 
     const off = document.createElement("div");
-    off.innerHTML=`<label for="office">Office</label>`;
+    off.classList.add("input-div")
+    off.innerHTML=`<label for="office" class="form-label">Office</label>`;
     const offSelect = document.createElement("select");
     offSelect.id="office";
     offSelect.name="office";
+    offSelect.classList.add("form-input");
+    offSelect.classList.add("form-input-select");
     offSelect.required=true;
     for(key in getOffices()){
-        const option = document.createElement("option");
         if(key === employee.office){
-            option.innerHTML=`<option value="${key}" selected>${key}</option>`
+            offSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            option.innerHTML=`<option value="${key}">${key}</option>`
+            offSelect.innerHTML+=`<option value="${key}">${key}</option>`
         }
-        offSelect.appendChild(option);
     }
     
     // console.log(offSelect);
     off.appendChild(offSelect);
+    off.innerHTML+=`<p id="editform-office-error" class="err-msg">Select a valid office</p>`
     // console.log(off);
-    div.appendChild(off);
+    div2.appendChild(off);
+    div2.innerHTML+=`<div class="input-div">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" placeholder="example@abc.com" id="email" name="email" class="form-input" value="${employee.email}" required>
+                        <p id="editform-email-error" class="err-msg">Enter a valid email</p>
+                    </div>`
 
     // console.log(div);
 
     str+=div.outerHTML;
+    str+=div2.outerHTML;
 
-    str+=`<div>
-            <div>
-                <label for="phone-no">Phone No.</label>
-                <input type="number" placeholder="Phone No." id="phone-no" name="phoneNumber" value="${employee.phoneNumber}" required>
+    str+=`<div class="form-div">
+            <div class="input-div">
+                <label for="phone-no" class="form-label">Phone No.</label>
+                <input type="number" placeholder="10 digit number" id="phone-no" name="phoneNumber" class="form-input" value="${employee.phoneNumber}" required>
+                <p id="editform-phone-no-error" class="err-msg">Enter a valid 10 digit phone number</p>
             </div>
-            <div>
-                <label for="skype-id">Skype Id</label>
-                <input type="number" placeholder="Skype ID" id="skype-id" name="skypeId" value="${employee.skypeId}" required>
+            <div class="input-div">
+                <label for="skype-id" class="form-label">Skype Id</label>
+                <input type="number" placeholder="Your skype ID" id="skype-id" name="skypeId" class="form-input" value="${employee.skypeId}" required>
+                <p id="editform-skype-id-error" class="err-msg">Enter a valid 8 digit skype id</p>
             </div>
         </div>
-        <button type="submit" class="blue-btn">Save</button>
-        <button type="reset" class="blue-btn">Cancel</button>`
+        <button type="submit" class="blue-btn form-btn">Save</button>
+        <button type="reset" class="blue-btn form-btn">Cancel</button>`
 
     // console.log(str);
     form.innerHTML=`${str}`
@@ -371,40 +666,110 @@ function editForm(employee){
 function editEmployee(id){
     let employees = getEmployees();
     const form = document.getElementById("employee-edit-form");
-    
-    let employee,index;
-    for(const [i,v] of employees.entries()){
-        if(v.id===id){
-            employee=v;
-            index=i;
-            break;
-        }
+
+    let firstName = form.firstName.value.trim();
+    let lastName = form.lastName.value.trim()
+    let email = form.email.value.trim();
+    let jobTitle = form.jobTitle.value.trim();
+    let office = form.office.value.trim();
+    let department = form.department.value.trim();
+    let phoneNumber = form.phoneNumber.value.trim();
+    let skypeId = form.skypeId.value.trim()
+
+    let flag=true;
+    if (firstName.length === 0){
+        document.getElementById("editform-firstname-error").style.display="block";
+        form.firstName.value = firstName;
+        form.firstName.focus();
+        flag=false;
+    } else{
+        document.getElementById("editform-firstname-error").style.display="none";
+    }
+    if (lastName.length === 0){
+        document.getElementById("editform-lastname-error").style.display="block";
+        form.lastName.value = lastName;
+        form.lastName.focus();
+        flag=false;
+    } else{
+        document.getElementById("editform-lastname-error").style.display="none";
+    }
+    if (email.length === 0){
+        document.getElementById("editform-email-error").style.display="block";
+        form.email.value = email;
+        form.email.focus();
+        flag=false;
+    } else{
+        document.getElementById("editform-email-error").style.display="none";
+    }
+    if(phoneNumber.length !== 10){
+        document.getElementById("editform-phone-no-error").style.display="block";
+        form.phoneNumber.value = phoneNumber;
+        form.phoneNumber.focus();
+        flag=false;
+    } else{
+        document.getElementById("editform-phone-no-error").style.display="none";
+    }
+    if(skypeId.length !== 8){
+        document.getElementById("editform-skype-id-error").style.display="block";
+        form.skypeId.value = skypeId;
+        form.skypeId.focus();
+        flag=false;
+    } else{
+        document.getElementById("editform-skype-id-error").style.display="none";
     }
 
-    let temp = getDepartments();
-    temp[employee.department]-=1;
-    temp[form.department.value]+=1;
-    setDepartments(temp);
-
-    temp = getOffices();
-    temp[employee.office]-=1;
-    temp[form.office.value]+=1;
-    setOffices(temp);
-
-    // console.log(employee,form.firstName);
-    employee.firstName = form.firstName.value;
-    employee.lastName = form.lastName.value;
-    employee.department = form.department.value;
-    employee.email = form.email.value;
-    employee.jobTitle = form.jobTitle.value;
-    employee.office= form.office.value;
-    employee.phoneNumber = form.phoneNumber.value;
-    employee.skypeId = form.skypeId.value;
-    employee.preferredName = employee.firstName+" "+employee.lastName;
-
-    employees.splice(index,employee);
-
-    setEmployees(employees);
+    if(flag){
+        let employee,index;
+        for(const [i,v] of employees.entries()){
+            if(v.id===id){
+                employee=v;
+                index=i;
+                break;
+            }
+        }
+    
+        let temp = getDepartments();
+        temp[employee.department]-=1;
+        temp[department]+=1;
+        setDepartments(temp);
+    
+        temp = getOffices();
+        temp[employee.office]-=1;
+        temp[office]+=1;
+        setOffices(temp);
+    
+        temp = getJobTitles();
+        temp[employee.jobTitle]-=1;
+        temp[jobTitle]+=1;
+        setJobTitles(temp);
+    
+        // console.log(employee,form.firstName);
+        employee.firstName = firstName
+        employee.lastName = lastName
+        employee.department = department
+        employee.email = email
+        employee.jobTitle = jobTitle
+        employee.office= office
+        employee.phoneNumber = phoneNumber
+        employee.skypeId = skypeId
+        employee.preferredName = employee.firstName+" "+employee.lastName;
+    
+        employees.splice(index,employee);
+    
+        setEmployees(employees);
+        const div = document.createElement("div");
+        div.classList.add("popup");
+        div.id="updated-popup";
+        div.innerHTML=`<p>Updated</p>`;
+        body = document.getElementsByTagName("body")[0];
+        body.appendChild(div);
+        setTimeout(() => div.remove(),3000);
+        displayOffices();
+        displayDepartments();
+        displayJobTitles();
+        searchAndFilterEmployees();
+    }
+    
 }
 
 function toKebabCase(str){
@@ -416,10 +781,10 @@ function toKebabCase(str){
     return arr.join("-");
 }
 
-function displayDepartments(departments){
+function displayDepartments(){
     const categoryOptions = document.getElementById("department-filter");
-    // categoryOptions.innerHTML="";
-
+    categoryOptions.innerHTML=`<li><input type="radio" name="department" class="side-filter-radio" value="" id="all-dept" checked><label for="all-dept" class="side-filter-label">All</label></li>`;
+    const departments = getDepartments();
     for(key in departments){
         // console.log(key);
         const option = document.createElement("li");
@@ -429,10 +794,10 @@ function displayDepartments(departments){
     }
 }
 
-function displayOffices(offices){
+function displayOffices(){
     const categoryOptions = document.getElementById("office-filter");
-    // categoryOptions.innerHTML=""
-
+    categoryOptions.innerHTML=`<li><input type="radio" name="office" class="side-filter-radio" value="" id="all-office" checked><label for="all-office" class="side-filter-label">All</label></li>`
+    const offices = getOffices();
     for(key in offices){
         const option = document.createElement("li");
         const id = toKebabCase(key);
@@ -441,16 +806,18 @@ function displayOffices(offices){
     }
 }
 
-// function displayJobTitles(jobTitles){
-//     const categoryOptions = document.getElementById("job-title-filter");
-//     categoryOptions.innerHTML=""
+function displayJobTitles(){
+    const categoryOptions = document.getElementById("job-title-filter");
+    categoryOptions.innerHTML=`<li><input type="radio" name="jobTitle" class="side-filter-radio" value="" id="all-jobs" checked><label for="all-jobs" class="side-filter-label">All</label></li>`
+    const jobTitles = getJobTitles();
 
-//     for(key in jobTitles){
-//         const option = document.createElement("li");
-//         option.innerText=`${key} (${jobTitles[key]})`
-//         categoryOptions.appendChild(option);
-//     }
-// }
+    for(key in jobTitles){
+        const option = document.createElement("li");
+        const id = toKebabCase(key);
+        option.innerHTML=`<input type="radio" name="jobTitle" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${jobTitles[key]})</label>`
+        categoryOptions.appendChild(option);
+    }
+}
 
 function searchAndFilterEmployees(){
     let employees = getEmployees();
@@ -475,6 +842,12 @@ function searchAndFilterEmployees(){
     if(office !== ""){
         employees = employees.filter(employee =>{
             return employee.office === office;
+        })
+    }
+
+    if(jobTitle !== ""){
+        employees = employees.filter(employee => {
+            return employee.jobTitle === jobTitle;
         })
     }
 
