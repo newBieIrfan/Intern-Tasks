@@ -70,12 +70,14 @@ header{
 
 .app-caption{
     font-size: 20px;
+    color: #999794;
 }
 
 .user-div{
     font-weight: 300;
     font-size: 35px;
     font-family: 'Abadi MT Std';
+    color: #999794;
 }
 
 .text-blue{
@@ -120,8 +122,13 @@ main{
     color: #10B6FC;
 }
 
-.view-more{
-    text-decoration: none;
+.view-more,.view-less{
+    color: #10B6FC;
+    cursor: pointer;
+}
+
+.less{
+    display: none;
 }
 
 .content-div{
@@ -242,7 +249,7 @@ label{
 }
 
 .display-grid{
-    border: 1px solid black;
+    border: 2px solid #E9E8E8;
     padding: 20px;
 }
 
@@ -254,6 +261,7 @@ label{
 
 .employee{
     display: flex;
+    background-color: #F2F2F2;
     background-color:#E9E8E8;
     padding: 10px;
 }
@@ -269,6 +277,10 @@ label{
 .card-name{
     margin-bottom: 5px;
 }
+
+/* .card-job-title,.card-department,.icon-div{
+    color: #999794;
+} */
 
 .icon-div{
     font-size: 15px;
@@ -381,7 +393,7 @@ label{
 
 .details-div{
     margin-left: 20px;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #999794;
 }
 
 .employee-name{

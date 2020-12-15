@@ -112,7 +112,7 @@ addForm.addEventListener('submit',(e) => {
         div.classList.add("popup")
         div.id="saved-popup"
         div.innerHTML=`<p>Saved</p>`
-        body = document.getElementsByTagName("body")[0];
+        body = document.body;
         body.appendChild(div);
         setTimeout(() => div.remove(),3000);
         addForm.reset();
@@ -174,6 +174,7 @@ function Employee(id,firstName,lastName,email,jobTitle,office,department,phoneNu
 
 function createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId){
     let idCounter = getCounter();
+    idCounter*=1;
     idCounter+=1;
     localStorage.setItem("idCounter",idCounter)
     const newEmployee = new Employee(idCounter,firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
@@ -761,7 +762,7 @@ function editEmployee(id){
         div.classList.add("popup");
         div.id="updated-popup";
         div.innerHTML=`<p>Updated</p>`;
-        body = document.getElementsByTagName("body")[0];
+        body = document.body;
         body.appendChild(div);
         setTimeout(() => div.remove(),3000);
         displayOffices();
@@ -785,12 +786,45 @@ function displayDepartments(){
     const categoryOptions = document.getElementById("department-filter");
     categoryOptions.innerHTML=`<li><input type="radio" name="department" class="side-filter-radio" value="" id="all-dept" checked><label for="all-dept" class="side-filter-label">All</label></li>`;
     const departments = getDepartments();
+    const span = document.createElement("span");
+    span.classList.add("less");
+    let c=0;
+
     for(key in departments){
         // console.log(key);
         const option = document.createElement("li");
         const id = toKebabCase(key);
         option.innerHTML=`<input type="radio" name="department" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${departments[key]})</label>`
-        categoryOptions.appendChild(option);
+        c+=1;
+        if(c<=5){
+            categoryOptions.appendChild(option);
+        } else {
+            span.appendChild(option);
+        }
+    }
+    
+    if(c>5){
+        const viewMore = document.getElementById("department-view-more");
+        const viewLess = document.getElementById("department-view-less");
+        
+        viewMore.classList.remove("less");
+        viewLess.classList.add("less");
+        categoryOptions.appendChild(span);
+
+        viewMore.addEventListener('click',() => {
+            // console.log("view more event");
+            viewMore.classList.add("less");
+            span.classList.remove("less");
+            // console.log("came here");
+            viewLess.classList.remove("less");
+        })
+
+        viewLess.addEventListener('click',() => {
+            // console.log("view less event");
+            viewLess.classList.add("less");
+            span.classList.add("less");
+            viewMore.classList.remove("less");
+        });
     }
 }
 
@@ -798,11 +832,44 @@ function displayOffices(){
     const categoryOptions = document.getElementById("office-filter");
     categoryOptions.innerHTML=`<li><input type="radio" name="office" class="side-filter-radio" value="" id="all-office" checked><label for="all-office" class="side-filter-label">All</label></li>`
     const offices = getOffices();
+    const span = document.createElement("span");
+    span.classList.add("less");
+    let c=0;
+
     for(key in offices){
         const option = document.createElement("li");
         const id = toKebabCase(key);
         option.innerHTML=`<input type="radio" name="office" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${offices[key]})</label>`
-        categoryOptions.appendChild(option);
+        c+=1;
+        if(c<=5){
+            categoryOptions.appendChild(option);
+        } else {
+            span.appendChild(option);
+        }
+    }
+    
+    if(c>5){
+        const viewMore = document.getElementById("office-view-more");
+        const viewLess = document.getElementById("office-view-less");
+        
+        viewMore.classList.remove("less");
+        viewLess.classList.add("less");
+        categoryOptions.appendChild(span);
+
+        viewMore.addEventListener('click',() => {
+            // console.log("view more event");
+            viewMore.classList.add("less");
+            span.classList.remove("less");
+            // console.log("came here");
+            viewLess.classList.remove("less");
+        })
+
+        viewLess.addEventListener('click',() => {
+            // console.log("view less event");
+            viewLess.classList.add("less");
+            span.classList.add("less");
+            viewMore.classList.remove("less");
+        });
     }
 }
 
@@ -810,12 +877,44 @@ function displayJobTitles(){
     const categoryOptions = document.getElementById("job-title-filter");
     categoryOptions.innerHTML=`<li><input type="radio" name="jobTitle" class="side-filter-radio" value="" id="all-jobs" checked><label for="all-jobs" class="side-filter-label">All</label></li>`
     const jobTitles = getJobTitles();
+    const span = document.createElement("span");
+    span.classList.add("less");
+    let c=0;
 
     for(key in jobTitles){
         const option = document.createElement("li");
         const id = toKebabCase(key);
         option.innerHTML=`<input type="radio" name="jobTitle" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${jobTitles[key]})</label>`
-        categoryOptions.appendChild(option);
+        c+=1;
+        if(c<=5){
+            categoryOptions.appendChild(option);
+        } else {
+            span.appendChild(option);
+        }
+    }
+    
+    if(c>5){
+        const viewMore = document.getElementById("job-title-view-more");
+        const viewLess = document.getElementById("job-title-view-less");
+        
+        viewMore.classList.remove("less");
+        viewLess.classList.add("less");
+        categoryOptions.appendChild(span);
+
+        viewMore.addEventListener('click',() => {
+            // console.log("view more event");
+            viewMore.classList.add("less");
+            span.classList.remove("less");
+            // console.log("came here");
+            viewLess.classList.remove("less");
+        })
+
+        viewLess.addEventListener('click',() => {
+            // console.log("view less event");
+            viewLess.classList.add("less");
+            span.classList.add("less");
+            viewMore.classList.remove("less");
+        });
     }
 }
 
