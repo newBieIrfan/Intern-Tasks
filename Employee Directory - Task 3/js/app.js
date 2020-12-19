@@ -1,9 +1,9 @@
 const modal = document.getElementById("modal-form");
-const employeeModal = document.getElementById("employee-modal");
-const openAddModalBtn = document.getElementById("open-add-modal");
-const span = document.getElementsByClassName("close")[0];
-const espan = document.getElementsByClassName("close")[1];
-const addForm = document.getElementById("add-employee");
+const addEmployeeBtn = document.getElementById("add-employee-btn");
+const span = document.getElementById("close");
+const addForm = document.getElementById("employee-add-form");
+const editForm = document.getElementById("employee-edit-form");
+const modalDiv = document.getElementById("modal-div");
 const employeeGrid = document.getElementById("employee-grid");
 const sideFilter = document.getElementById("side-filter")
 const inputSearch = document.getElementById("search-input");
@@ -19,35 +19,32 @@ var office="";
 var jobTitle=""
 
 document.addEventListener('DOMContentLoaded',() => {
-    const employees = getEmployees();
+    createAddForm();
+
     displayAlphabetSearchDiv();
+
+    const employees = getEmployees();
     displayEmployees(employees);
     displayDepartments();
     displayOffices();
     displayJobTitles();
 });
 
-openAddModalBtn.addEventListener('click',(e) => {
-    // console.log(e.target.value);
-    // console.log("button clicked");
-    createAddForm();
+addEmployeeBtn.addEventListener('click',(e) => {
     modal.style.display = "block";
+    addForm.style.display = "block";
+    editForm.style.display = "none";
+    modalDiv.style.display = "none";
+
 });
 
 span.addEventListener('click',() => {
   modal.style.display = "none";
 });
 
-espan.addEventListener('click',() => {
-    employeeModal.style.display = "none";
-})
-
 window.addEventListener('click',(event) => {
     if (event.target == modal) {
         modal.style.display = "none";
-    }
-    if (event.target == employeeModal){
-        employeeModal.style.display = "none";
     }
 });
 
@@ -65,42 +62,48 @@ addForm.addEventListener('submit',(e) => {
     let skypeId = addForm.skypeId.value.trim();
     
     let flag=true;
-    if (firstName.length === 0){
-        document.getElementById("firstname-error").style.display="block";
+    if (validateNameString(firstName).length !== 0){
+        // console.log(validateNameString(firstName))
+        const p = document.getElementById("firstname-error");
+        p.style.display="block";
+        p.innerText=`${validateNameString(firstName)}`;
         addForm.firstName.value = firstName;
-        addForm.firstName.focus();
+        // errMessage(p,validateNameString(firstName));
         flag=false;
     } else{
         document.getElementById("firstname-error").style.display="none";
     }
-    if (lastName.length === 0){
-        document.getElementById("lastname-error").style.display="block";
+    if (validateNameString(lastName).length !== 0){
+        // console.log(validateNameString(firstName))
+        const p = document.getElementById("lastname-error");
+        p.style.display="block";
+        p.innerText=`${validateNameString(lastName)}`;
         addForm.lastName.value = lastName;
-        addForm.lastName.focus();
         flag=false;
     } else{
         document.getElementById("lastname-error").style.display="none";
     }
-    if (email.length === 0){
-        document.getElementById("email-error").style.display="block";
+    if (validateEmail(email).length !== 0){
+        const p = document.getElementById("email-error");
+        p.style.display="block";
+        p.innerText=`${validateEmail(email)}`;
         addForm.email.value = email;
-        addForm.email.focus();
         flag=false;
     } else{
         document.getElementById("email-error").style.display="none";
     }
-    if(phoneNumber.length !== 10){
+    if(phoneNumber.length>0 && phoneNumber.length !== 10){
         document.getElementById("phone-no-error").style.display="block";
         addForm.phoneNumber.value = phoneNumber;
-        addForm.phoneNumber.focus();
         flag=false;
     } else{
         document.getElementById("phone-no-error").style.display="none";
     }
-    if(skypeId.length !== 8){
-        document.getElementById("skype-id-error").style.display="block";
+    if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
+        const p = document.getElementById("skype-id-error");
+        p.style.display="block";
+        p.innerText=`${validateSkypeId(skypeId)}`;
         addForm.skypeId.value = skypeId;
-        addForm.skypeId.focus();
         flag=false;
     } else{
         document.getElementById("skype-id-error").style.display="none";
@@ -116,9 +119,18 @@ addForm.addEventListener('submit',(e) => {
         body.appendChild(div);
         setTimeout(() => div.remove(),3000);
         addForm.reset();
+        modal.style.display="none";
     }
 
 });
+
+addForm.addEventListener('reset',(e) => {
+    document.getElementById("firstname-error").style.display="none";
+    document.getElementById("lastname-error").style.display="none";
+    document.getElementById("email-error").style.display="none";
+    document.getElementById("phone-no-error").style.display="none";
+    document.getElementById("skype-id-error").style.display="none";
+})
 
 inputSearch.addEventListener("input",(e) => {
     // console.log(e);
@@ -293,52 +305,57 @@ function addEmployee(newEmployee){
 
 function displayEmployees(employees){
     employeeGrid.innerHTML="";
-    let name;
-    employees.forEach(employee => {
-        const employeeDiv = document.createElement('div');
-        employeeDiv.classList.add("employee-div");
 
-        const hiddenDiv = document.createElement('div');
-        hiddenDiv.id=employee.id;
-        hiddenDiv.classList.add("hidden-div");
-        // hiddenDiv.innerText = "hiddenDiv"
-        hiddenDiv.addEventListener('click',e => {
-            // console.log(e.target.id);
-            displayEmployeeDetails(e.target.id);
-        })
-
-        if(employee.preferredName.length>20){
-            name = employee.firstName;
-        } else {
-            name = employee.preferredName;
-        }
-
-        const employeeCard = document.createElement('div');
-        employeeCard.classList.add('employee');
-        employeeCard.innerHTML=`<img class="card-img" src="./img/user_icon.jpg" alt="employee_img">
-                                <div class="card">
-                                    <h3 class="card-name">${name}</h3>
-                                    <p class="card-job-title">${employee.jobTitle}</p>
-                                    <p class="card-department">${employee.department} Department</p>
-                                    <div class="icon-div"><i class="fas fa-phone-square-alt" aria-hidden="true"></i><i class="fas fa-envelope" aria-hidden="true"></i><i class="fas fa-comment" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-heart" aria-hidden="true"></i></div>
-                                </div>`
-
-        employeeDiv.appendChild(hiddenDiv);
-        employeeDiv.appendChild(employeeCard);
-        employeeGrid.appendChild(employeeDiv);
-    });
+    if(employees.length===0){
+        employeeGrid.innerHTML=`<h4>Sorry, no results found!</h4>`
+    } else {
+        let name;
+        employees.forEach(employee => {
+            const employeeDiv = document.createElement('div');
+            employeeDiv.classList.add("employee-div");
+    
+            const hiddenDiv = document.createElement('div');
+            hiddenDiv.id=employee.id;
+            hiddenDiv.classList.add("hidden-div");
+            // hiddenDiv.innerText = "hiddenDiv"
+            hiddenDiv.addEventListener('click',e => {
+                displayEmployeeDetails(e.target.id);
+            })
+    
+            if(employee.preferredName.length>20){
+                name = employee.firstName;
+            } else {
+                name = employee.preferredName;
+            }
+    
+            const employeeCard = document.createElement('div');
+            employeeCard.classList.add('employee');
+            employeeCard.innerHTML=`<img class="card-img" src="./img/user_icon.jpg" alt="employee_img">
+                                    <div class="card">
+                                        <h3 class="card-name">${name}</h3>
+                                        <p class="card-job-title">${employee.jobTitle}</p>
+                                        <p class="card-department">${employee.department} Department</p>
+                                        <div class="icon-div"><i class="fas fa-phone-square-alt" aria-hidden="true"></i><i class="fas fa-envelope" aria-hidden="true"></i><i class="fas fa-comment" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-heart" aria-hidden="true"></i></div>
+                                    </div>`
+    
+            employeeDiv.appendChild(hiddenDiv);
+            employeeDiv.appendChild(employeeCard);
+            employeeGrid.appendChild(employeeDiv);
+        });        
+    }
 }
 
 function displayEmployeeDetails(employeeId){
+    modal.style.display="block";
+    addForm.style.display="none";
+    editForm.style.display="none";
+    modalDiv.style.display="block";
+
     let employees = getEmployees();
     employees = employees.filter(employee => {
         return employee.id === employeeId;
     })
     const employee = employees[0]
-    employeeModal.style.display = "block";
-    // console.log(employeeModal);
-
-    const modalDiv = document.getElementById("modal-div");
     modalDiv.innerHTML = `<div class="professional-details">
                             <img class="employee-img" src="./img/user_icon.jpg" alt="employee_img">
                             <div class="details-div">
@@ -372,8 +389,8 @@ function displayEmployeeDetails(employeeId){
                             </div>
                             <div class="contact-details">
                                 <p class="property-value"><i class="fas fa-envelope property-name" aria-hidden="true"></i>${employee.email}</p>
-                                <p class="property-value"><i class="fab fa-skype property-name"></i>${employee.skypeId}</p>
-                                <p class="property-value"><i class="fas fa-phone-square-alt property-name" aria-hidden="true"></i></i>${employee.phoneNumber}</p>
+                                <p class="property-value"><i class="fab fa-skype property-name"></i>${employee.skypeId || "not provided"}</p>
+                                <p class="property-value"><i class="fas fa-phone-square-alt property-name" aria-hidden="true"></i></i>${employee.phoneNumber || "not provided"}</p>
                             </div>
                         </div>`
     const editBtn = document.createElement("button")
@@ -381,339 +398,210 @@ function displayEmployeeDetails(employeeId){
     editBtn.classList.add("blue-btn");
     editBtn.classList.add("form-btn");
     editBtn.addEventListener('click', () => {
-        modalDiv.innerHTML=""
-        const form = editForm(employee);
-        modalDiv.appendChild(form);
+        createEditForm(employee);
     });
     modalDiv.appendChild(editBtn);
 }
 
-function createAddForm(){
-    let str=`<div class="form-div">
-                <div class="input-div">
-                    <label for="firstname" class="form-label">First Name</label>
-                    <input type="text" placeholder="ex: John" id="firstname" name="firstName" class="form-input" required>
-                    <p id="firstname-error" class="err-msg">First name should not be empty</p>
-                </div>
-                <div class="input-div">
-                    <label for="lastname" class="form-label">Last Name</label>
-                    <input type="text" placeholder="ex: Doe" id="lastname" name="lastName" class="form-input" required>
-                    <p id="lastname-error" class="err-msg">Last name should not be empty</p>
-                </div>
-            </div>`
-    const div = document.createElement("div");
-    div.classList.add("form-div")
-
-    const div2 = document.createElement("div");
-    div2.classList.add("form-div")
-
-    const jobs = document.createElement("div");
-    jobs.classList.add("input-div")
-    jobs.innerHTML=`<label for="job-title" class="form-label">Office</label>`;
-    const jobSelect = document.createElement("select");
-    jobSelect.id="job-title";
-    jobSelect.name="jobTitle";
-    jobSelect.classList.add("form-input");
-    jobSelect.classList.add("form-input-select");
-    jobSelect.required=true;
-    let c=1;
-    for(key in getJobTitles()){
-        // console.log("here");
-        if(c===1){
-            jobSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`;
-            c+=1;
-        } else {
-            jobSelect.innerHTML+=`<option value="${key}">${key}</option>`
-        }
-    }
-    
-    // console.log(offSelect);
-    jobs.appendChild(jobSelect);
-    jobs.innerHTML+=`<p id="job-title-error" class="err-msg">Select a valid job title</p>`
-    // console.log(off);
-    div.appendChild(jobs);
-
-    const dept = document.createElement("div");
-    dept.classList.add("input-div");
-    dept.innerHTML=`<label for="department" class="form-label">Department</label>`
-    const deptSelect = document.createElement("select");
-    deptSelect.id="department";
-    deptSelect.name="department";
-    deptSelect.classList.add("form-input");
-    deptSelect.classList.add("form-input-select");
-    deptSelect.required=true;
-    c=1;
-    for(key in getDepartments()){
-        // console.log("here");
-        if(c===1){
-            deptSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`;
-            // console.log("now here");
-            c+=1;
-        } else {
-            deptSelect.innerHTML+=`<option value="${key}">${key}</option>`;
-            // console.log("Also here");
-        }
-    }
-    // console.log(deptSelect)
-    dept.appendChild(deptSelect);
-    dept.innerHTML+=`<p id="department-error" class="err-msg">Select a valid department</p>`
-    // console.log(dept);
-    div.appendChild(dept);
-
-    const off = document.createElement("div");
-    off.classList.add("input-div")
-    off.innerHTML=`<label for="office" class="form-label">Office</label>`;
-    const offSelect = document.createElement("select");
-    offSelect.id="office";
-    offSelect.name="office";
-    offSelect.classList.add("form-input");
-    offSelect.classList.add("form-input-select");
-    offSelect.required=true;
-    c=1;
-    for(key in getOffices()){
-        if(c===1){
-            offSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`;
-            c+=1;
-        } else {
-            offSelect.innerHTML+=`<option value="${key}">${key}</option>`
-        }
-    }
-    
-    // console.log(offSelect);
-    off.appendChild(offSelect);
-    off.innerHTML+=`<p id="office-error" class="err-msg">Select a valid office</p>`
-    // console.log(off);
-    div2.appendChild(off);
-    div2.innerHTML+=`<div class="input-div">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" placeholder="example@abc.com" id="email" name="email" class="form-input" required>
-                        <p id="email-error" class="err-msg">Enter a valid email</p>
-                    </div>`
-
-    // console.log(div);
-
-    str+=div.outerHTML;
-    str+=div2.outerHTML;
-
-    str+=`<div class="form-div">
-            <div class="input-div">
-                <label for="phone-no" class="form-label">Phone No.</label>
-                <input type="number" placeholder="10 digit number" id="phone-no" name="phoneNumber" class="form-input" required>
-                <p id="phone-no-error" class="err-msg">Enter a valid 10 digit phone number</p>
-            </div>
-            <div class="input-div">
-                <label for="skype-id" class="form-label">Skype Id</label>
-                <input type="number" placeholder="Your skype ID" id="skype-id" name="skypeId" class="form-input" required>
-                <p id="skype-id-error" class="err-msg">Enter a valid 8 digit skype id</p>
-            </div>
-        </div>
-        <button type="submit" class="blue-btn form-btn">Save</button>`
-
-    addForm.innerHTML=`${str}`
-    
-    const cancelBtn = document.createElement("button");
-    cancelBtn.type="reset"
-    cancelBtn.classList.add("blue-btn");
-    cancelBtn.classList.add("form-btn");
-    cancelBtn.id="cancel-button";
-    cancelBtn.innerText="Cancel"
-
-    cancelBtn.addEventListener('click',() => {
-        modal.style.display = "none";
-    });
-
-    addForm.appendChild(cancelBtn);
-
+function isAlpha(k){
+    return (k>="a" && k<="z") || (k>="A" && k<="Z")
 }
 
-function editForm(employee){
-    const form = document.createElement("form");
-    form.id="employee-edit-form";
-    let str=`<div class="form-div">
-                <div class="input-div">
-                    <label for="firstname" class="form-label">First Name</label>
-                    <input type="text" placeholder="ex: John" id="firstname" name="firstName" class="form-input" value="${employee.firstName}" required>
-                    <p id="editform-firstname-error" class="err-msg">First name should not be empty</p>
-                </div>
-                <div class="input-div">
-                    <label for="lastname" class="form-label">Last Name</label>
-                    <input type="text" placeholder="ex: Doe" id="lastname" name="lastName" class="form-input" value="${employee.lastName}" required>
-                    <p id="editform-lastname-error" class="err-msg">Last name should not be empty</p>
-                </div>
-            </div>`
-    const div = document.createElement("div");
-    div.classList.add("form-div")
-    // div.innerHTML=`<div class="input-div">
-    //                     <label for="job-title" class="form-label">Job Title</label>
-    //                     <!-- <select name="jobTitle" id="job-title"></select> -->
-    //                     <input type="text" placeholder="Job Title" id="job-title" name="jobTitle" class="form-input form-input-select" value="${employee.jobTitle}" required>
-    //                 </div>`
+function isNumeric(n){
+    return n>=0 && n<=9;
+}
 
-    const div2 = document.createElement("div");
-    div2.classList.add("form-div")
+function validateNameString(name){
+    if(name.length === 0){
+        return "should not be empty";
+    }
 
-    const jobs = document.createElement("div");
-    jobs.classList.add("input-div")
-    jobs.innerHTML=`<label for="job-title" class="form-label">Office</label>`;
-    const jobSelect = document.createElement("select");
-    jobSelect.id="job-title";
-    jobSelect.name="jobTitle";
-    jobSelect.classList.add("form-input");
-    jobSelect.classList.add("form-input-select");
-    jobSelect.required=true;
+    for(k of name){
+        if(!(isAlpha(k) || k==" ")){
+            return "should contain only letters";
+        }
+    }
+
+    return "";
+}
+
+function validateEmail(email)
+{
+    if(email.length === 0){
+        return "should not be empty";
+    }
+    if (!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))){
+        return "Not a valid email";
+    }
+    return "";
+}
+
+function validateSkypeId(skypeId){
+    if(!isAlpha(skypeId.charAt(0))){
+        return "Should start with letter";
+    }
+    if(skypeId.length<6){
+        return "Minimum 6 characters";
+    }
+    if(skypeId.length>32){
+        return "Maximum 32 characters";
+    }
+    
+    for(k of skypeId){
+        if(!isAlpha(k) && !isNumeric(k) && ",-_.".indexOf(k)===-1){
+            return "Contains invalid characters.";
+        }
+    }
+
+    return "";
+}
+
+function createAddForm(){
+    addForm.jobTitle.innerHTML="";
+    addForm.department.innerHTML="";
+    addForm.office.innerHTML="";
+
+    let c=1;
+    for(key in getJobTitles()){
+        if(c===1){
+            addForm.jobTitle.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            c+=1;
+        } else {
+            addForm.jobTitle.innerHTML+=`<option value="${key}">${key}</option>`
+        }
+    }
+    
+    c=1;
+    for(key in getDepartments()){
+        if(c===1){
+            addForm.department.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            c+=1;
+        } else {
+            addForm.department.innerHTML+=`<option value="${key}">${key}</option>`;
+        }
+    }
+    
+    c=1;
+    for(key in getOffices()){
+        if(c===1){
+            addForm.office.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            c+=1;
+        } else {
+            addForm.office.innerHTML+=`<option value="${key}">${key}</option>`
+        }
+    }
+}
+
+function createEditForm(employee){
+    modal.style.display="block";
+    editForm.style.display="block";
+    addForm.style.display="none";
+    modalDiv.style.display="none";
+
+    editForm.jobTitle.innerHTML="";
+    editForm.office.innerHTML="";
+    editForm.department.innerHTML="";
+
+    editForm.firstName.value = employee.firstName;
+    editForm.lastName.value = employee.lastName;
+    editForm.email.value = employee.email;
+    editForm.phoneNumber.value = employee.phoneNumber;
+    editForm.skypeId.value = employee.skypeId;
+    
     for(key in getJobTitles()){
         if(key === employee.jobTitle){
-            jobSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`
+            editForm.jobTitle.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            jobSelect.innerHTML+=`<option value="${key}">${key}</option>`
+            editForm.jobTitle.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
-    
-    // console.log(offSelect);
-    jobs.appendChild(jobSelect);
-    jobs.innerHTML+=`<p id="editform-job-title-error" class="err-msg">Select a valid job title</p>`
-    // console.log(off);
-    div.appendChild(jobs);
-
-    const dept = document.createElement("div");
-    dept.classList.add("input-div");
-    dept.innerHTML=`<label for="department" class="form-label">Department</label>`
-    const deptSelect = document.createElement("select");
-    deptSelect.id="department";
-    deptSelect.name="department";
-    deptSelect.classList.add("form-input");
-    deptSelect.classList.add("form-input-select");
-    deptSelect.required=true;
     for(key in getDepartments()){
         if(key === employee.department){
-            deptSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`
+            editForm.department.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            deptSelect.innerHTML+=`<option value="${key}">${key}</option>`
+            editForm.department.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
-    // console.log(deptSelect)
-    dept.appendChild(deptSelect);
-    dept.innerHTML+=`<p id="editform-department-error" class="err-msg">Select a valid department</p>`
-    // console.log(dept);
-    div.appendChild(dept);
-
-    const off = document.createElement("div");
-    off.classList.add("input-div")
-    off.innerHTML=`<label for="office" class="form-label">Office</label>`;
-    const offSelect = document.createElement("select");
-    offSelect.id="office";
-    offSelect.name="office";
-    offSelect.classList.add("form-input");
-    offSelect.classList.add("form-input-select");
-    offSelect.required=true;
     for(key in getOffices()){
         if(key === employee.office){
-            offSelect.innerHTML+=`<option value="${key}" selected>${key}</option>`
+            editForm.office.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            offSelect.innerHTML+=`<option value="${key}">${key}</option>`
+            editForm.office.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
-    
-    // console.log(offSelect);
-    off.appendChild(offSelect);
-    off.innerHTML+=`<p id="editform-office-error" class="err-msg">Select a valid office</p>`
-    // console.log(off);
-    div2.appendChild(off);
-    div2.innerHTML+=`<div class="input-div">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" placeholder="example@abc.com" id="email" name="email" class="form-input" value="${employee.email}" required>
-                        <p id="editform-email-error" class="err-msg">Enter a valid email</p>
-                    </div>`
 
-    // console.log(div);
+    document.getElementById("editform-firstname-error").style.display="none";
+    document.getElementById("editform-lastname-error").style.display="none";
+    document.getElementById("editform-email-error").style.display="none";
+    document.getElementById("editform-phone-no-error").style.display="none";
+    document.getElementById("editform-skype-id-error").style.display="none";
 
-    str+=div.outerHTML;
-    str+=div2.outerHTML;
-
-    str+=`<div class="form-div">
-            <div class="input-div">
-                <label for="phone-no" class="form-label">Phone No.</label>
-                <input type="number" placeholder="10 digit number" id="phone-no" name="phoneNumber" class="form-input" value="${employee.phoneNumber}" required>
-                <p id="editform-phone-no-error" class="err-msg">Enter a valid 10 digit phone number</p>
-            </div>
-            <div class="input-div">
-                <label for="skype-id" class="form-label">Skype Id</label>
-                <input type="number" placeholder="Your skype ID" id="skype-id" name="skypeId" class="form-input" value="${employee.skypeId}" required>
-                <p id="editform-skype-id-error" class="err-msg">Enter a valid 8 digit skype id</p>
-            </div>
-        </div>
-        <button type="submit" class="blue-btn form-btn">Save</button>
-        <button type="reset" class="blue-btn form-btn">Cancel</button>`
-
-    // console.log(str);
-    form.innerHTML=`${str}`
-    // console.log(form);
-
-    form.addEventListener('submit',(e) =>{
+    editForm.onsubmit = (e) => {
         e.preventDefault();
-        // console.log("submitted");
         editEmployee(employee.id);
-    });
+    };
 
-    form.addEventListener('reset',(e)=>{
-        // e.preventDefault();
+    editForm.onreset = (e)=>{
+        e.preventDefault();
         displayEmployeeDetails(employee.id);
-    })
-
-
-    return form;
+    };
 }
 
 function editEmployee(id){
     let employees = getEmployees();
-    const form = document.getElementById("employee-edit-form");
 
-    let firstName = form.firstName.value.trim();
-    let lastName = form.lastName.value.trim()
-    let email = form.email.value.trim();
-    let jobTitle = form.jobTitle.value.trim();
-    let office = form.office.value.trim();
-    let department = form.department.value.trim();
-    let phoneNumber = form.phoneNumber.value.trim();
-    let skypeId = form.skypeId.value.trim()
-
+    let firstName = editForm.firstName.value.trim();
+    let lastName = editForm.lastName.value.trim()
+    let email = editForm.email.value.trim();
+    let jobTitle = editForm.jobTitle.value.trim();
+    let office = editForm.office.value.trim();
+    let department = editForm.department.value.trim();
+    let phoneNumber = editForm.phoneNumber.value.trim();
+    let skypeId = editForm.skypeId.value.trim();
+    
     let flag=true;
-    if (firstName.length === 0){
-        document.getElementById("editform-firstname-error").style.display="block";
-        form.firstName.value = firstName;
-        form.firstName.focus();
+    if (validateNameString(firstName).length !== 0){
+        // console.log(validateNameString(firstName))
+        const p = document.getElementById("editform-firstname-error");
+        p.style.display="block";
+        p.innerText=`${validateNameString(firstName)}`;
+        // errMessage(p,validateNameString(firstName));
+        editForm.firstName.value = firstName;
         flag=false;
     } else{
         document.getElementById("editform-firstname-error").style.display="none";
     }
-    if (lastName.length === 0){
-        document.getElementById("editform-lastname-error").style.display="block";
-        form.lastName.value = lastName;
-        form.lastName.focus();
+    if (validateNameString(lastName).length !== 0){
+        // console.log(validateNameString(firstName))
+        const p = document.getElementById("editform-lastname-error");
+        p.style.display="block";
+        p.innerText=`${validateNameString(lastName)}`;
+        editForm.lastName.value = lastName;
         flag=false;
     } else{
         document.getElementById("editform-lastname-error").style.display="none";
     }
-    if (email.length === 0){
-        document.getElementById("editform-email-error").style.display="block";
-        form.email.value = email;
-        form.email.focus();
+    if (validateEmail(email).length !== 0){
+        const p = document.getElementById("editform-email-error");
+        p.style.display="block";
+        p.innerText=`${validateEmail(email)}`;
+        editForm.email.value = email;
         flag=false;
     } else{
         document.getElementById("editform-email-error").style.display="none";
     }
-    if(phoneNumber.length !== 10){
+    if(phoneNumber.length>0 && phoneNumber.length !== 10){
         document.getElementById("editform-phone-no-error").style.display="block";
-        form.phoneNumber.value = phoneNumber;
-        form.phoneNumber.focus();
+        editForm.phoneNumber.value = phoneNumber;
         flag=false;
     } else{
         document.getElementById("editform-phone-no-error").style.display="none";
     }
-    if(skypeId.length !== 8){
-        document.getElementById("editform-skype-id-error").style.display="block";
-        form.skypeId.value = skypeId;
-        form.skypeId.focus();
+    if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
+        const p = document.getElementById("editform-skype-id-error");
+        p.style.display="block";
+        p.innerText=`${validateSkypeId(skypeId)}`;
+        editForm.skypeId.value = skypeId;
         flag=false;
     } else{
         document.getElementById("editform-skype-id-error").style.display="none";
@@ -769,8 +657,15 @@ function editEmployee(id){
         displayDepartments();
         displayJobTitles();
         searchAndFilterEmployees();
+        displayEmployeeDetails(id);
     }
     
+}
+
+function errMessage(ele,msg){
+    ele.innerText=`${msg}`;
+    ele.style.display="block";
+    setTimeout(() => {ele.style.display="none"},5000);
 }
 
 function toKebabCase(str){

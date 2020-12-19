@@ -10,22 +10,55 @@ html,body{
 @font-face {
     font-family: 'Abadi MT Std';
     src: url('./fonts/AbadiMTStd.eot');
-    src: url('./fonts/AbadiMTStd.eot?#iefix') format('embedded-opentype'),
+    src: local('Abadi MT Std'), local('AbadiMTStd'),
+        url('./fonts/AbadiMTStd.eot?#iefix') format('embedded-opentype'),
         url('./fonts/AbadiMTStd.woff2') format('woff2'),
         url('./fonts/AbadiMTStd.woff') format('woff'),
         url('./fonts/AbadiMTStd.ttf') format('truetype');
-    font-weight: 100;
+    font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
+
+@font-face {
+    font-family: 'Abadi MT Std Light';
+    src: url('./fonts/AbadiMTStd-Light.eot');
+    src: local('Abadi MT Std Light'), local('AbadiMTStd-Light'),
+        url('./fonts/AbadiMTStd-Light.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/AbadiMTStd-Light.woff2') format('woff2'),
+        url('./fonts/AbadiMTStd-Light.woff') format('woff'),
+        url('./fonts/AbadiMTStd-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Abadi MT Std ExtraLight';
+    src: url('./fonts/AbadiMTStd-ExtraLight.eot');
+    src: local('Abadi MT Std Extra Light'), local('AbadiMTStd-ExtraLight'),
+        url('./fonts/AbadiMTStd-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/AbadiMTStd-ExtraLight.woff2') format('woff2'),
+        url('./fonts/AbadiMTStd-ExtraLight.woff') format('woff'),
+        url('./fonts/AbadiMTStd-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 body{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+button{
+    cursor: pointer;
+}
+
 .container{
     width: 94%;
     margin: auto;
+    /* padding: 0 40px; */
 }
 
 header{
@@ -58,7 +91,7 @@ header{
 }
 
 .app-div{
-    font-family: 'Abadi MT Std';
+    font-family: 'Abadi MT Std Light';
     font-weight: 300;
     margin-left: 30px;
 }
@@ -76,7 +109,7 @@ header{
 .user-div{
     font-weight: 300;
     font-size: 35px;
-    font-family: 'Abadi MT Std';
+    font-family: 'Abadi MT Std Light';
     color: #999794;
 }
 
@@ -89,7 +122,7 @@ header{
 }
 
 main{
-    margin-top: 40px;
+    margin: 40px 0 20px 0;
     display: grid;
     grid-template-columns: 20% 80%;
     height: 700px;
@@ -116,6 +149,7 @@ main{
 
 .side-filter-label{
     font-size: 15px;
+    cursor: pointer;
 }
 
 .side-filter-radio:checked+label{
@@ -132,17 +166,27 @@ main{
 }
 
 .content-div{
-    display: grid;
+    /* display: grid; */
     grid-template-rows: 20% 80%;
 }
 
 #alphabet-search{
+    /* display: grid;
+    grid-template-columns: repeat(27,1fr);
+    grid-column-gap: 2px; */
+    margin-bottom: 20px;
+    overflow-x: auto;
     display: flex;
     justify-content: space-between;
-    /* display: grid; */
-    /* grid-template-columns: repeat(27,1fr); */
-    /* grid-column-gap: 2px; */
-    margin-bottom: 20px;
+}
+
+#alphabet-search div{
+    /* margin-left: 2px; */
+    width: 3.5%;
+}
+
+.alphabet:hover{
+    background-color: black;
 }
 
 .blue-btn{
@@ -155,8 +199,13 @@ main{
 .alphabet{
     font-size: 20px;
     font-weight: 100;
-    padding: 8px 16px;
+    padding: 8px 0;
+    cursor: pointer;
+    /* margin-left: 2px; */
+    display: block;
+    text-align: center;
 }
+
 
 input[type="radio"]{
     opacity: 0;
@@ -183,12 +232,6 @@ input[type="radio"]{
 .search-div{
     display: flex;
     align-items: center;
-}
-
-.filter-div{
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
 }
 
 label{
@@ -226,6 +269,35 @@ label{
     padding: 10px 30px;
     margin: 0 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+}
+
+#clear-button:hover{
+    color: black;
+}
+
+.filter-div{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-div::after{
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: .75rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.filter-div:hover::after{
+    background: #10B6FC;
+    color: white;
 }
 
 #property-filter{
@@ -234,14 +306,24 @@ label{
     font-size: 16px;
     width: 180px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
 }
 
-#open-add-modal{
+#add-employee-btn{
     font-size: 20px;
     font-weight: 600;
     width: fit-content;
     padding: 10px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+}
+
+#add-employee-btn:hover{
+    color: black;
 }
 
 .note{
@@ -251,6 +333,8 @@ label{
 .display-grid{
     border: 2px solid #E9E8E8;
     padding: 20px;
+    overflow-y: auto;
+    height: 500px;
 }
 
 #employee-grid{
@@ -286,6 +370,7 @@ label{
     font-size: 15px;
     /* height: fit-content; */
     margin-top: 5px;
+    color: #999794;
 }
 
 .icon-div i{
@@ -294,7 +379,7 @@ label{
     /* width: 10px; */
 }
 
-#modal-form,#employee-modal{
+#modal-form{
     display: none;
     position: fixed;
     z-index: 1;
@@ -324,15 +409,14 @@ label{
     color: #10b6fc;
 }
 
-.close {
+#close {
     color: #aaa;
     float: right;
-    /* font-size: 28px; */
     font-weight: bold;
 }
   
-.close:hover,
-.close:focus {
+#close:hover,
+#close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -438,10 +522,6 @@ label{
     height: 110px;
 }
 
-#cancel-button{
-    margin-left: 5px;
-}
-
 .err-msg{
     color: red;
     display: none;
@@ -468,4 +548,17 @@ label{
 
 #updated-popup{
     border-left: 10px solid #69BA00;;
+}
+
+
+@media only screen and (max-width:1600px){
+    #employee-grid{
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    #employee-grid{
+        grid-template-columns: repeat(2,1fr);
+    }
 }
