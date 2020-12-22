@@ -1,9 +1,9 @@
 const modal = document.getElementById("modal-form");
 const addEmployeeBtn = document.getElementById("add-employee-btn");
-const span = document.getElementById("close");
+const closeBtn = document.getElementById("close");
 const addForm = document.getElementById("employee-add-form");
 const editForm = document.getElementById("employee-edit-form");
-const modalDiv = document.getElementById("modal-div");
+const employeeDetailsElement = document.getElementById("employee-details");
 const employeeGrid = document.getElementById("employee-grid");
 const sideFilter = document.getElementById("side-filter")
 const inputSearch = document.getElementById("search-input");
@@ -13,6 +13,8 @@ const alphabetSearch = document.getElementById("alphabet-search");
 const departmentFilter = document.getElementById("department-filter");
 const officeFilter = document.getElementById("office-filter");
 const jobTitleFilter = document.getElementById("job-title-filter");
+const maxDisplayCount = 5;
+
 var alphabet="";
 var department="";
 var office="";
@@ -34,11 +36,10 @@ addEmployeeBtn.addEventListener('click',(e) => {
     modal.style.display = "block";
     addForm.style.display = "block";
     editForm.style.display = "none";
-    modalDiv.style.display = "none";
-
+    employeeDetailsElement.style.display = "none";
 });
 
-span.addEventListener('click',() => {
+closeBtn.addEventListener('click',() => {
   modal.style.display = "none";
 });
 
@@ -50,8 +51,7 @@ window.addEventListener('click',(event) => {
 
 addForm.addEventListener('submit',(e) => {
     e.preventDefault();
-    // console.log(e);
-    // console.log(addForm.firstName.value,addForm.lastName.value,addForm.email.value,addForm.jobTitle.value,addForm.office.value,addForm.department.value,addForm.phoneNumber.value,addForm.skypeId.value);
+
     let firstName = addForm.firstName.value.trim();
     let lastName = addForm.lastName.value.trim()
     let email = addForm.email.value.trim();
@@ -63,30 +63,27 @@ addForm.addEventListener('submit',(e) => {
     
     let flag=true;
     if (validateNameString(firstName).length !== 0){
-        // console.log(validateNameString(firstName))
-        const p = document.getElementById("firstname-error");
-        p.style.display="block";
-        p.innerText=`${validateNameString(firstName)}`;
+        const errMessageElement = document.getElementById("firstname-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateNameString(firstName)}`;
         addForm.firstName.value = firstName;
-        // errMessage(p,validateNameString(firstName));
         flag=false;
     } else{
         document.getElementById("firstname-error").style.display="none";
     }
     if (validateNameString(lastName).length !== 0){
-        // console.log(validateNameString(firstName))
-        const p = document.getElementById("lastname-error");
-        p.style.display="block";
-        p.innerText=`${validateNameString(lastName)}`;
+        const errMessageElement = document.getElementById("lastname-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateNameString(lastName)}`;
         addForm.lastName.value = lastName;
         flag=false;
     } else{
         document.getElementById("lastname-error").style.display="none";
     }
     if (validateEmail(email).length !== 0){
-        const p = document.getElementById("email-error");
-        p.style.display="block";
-        p.innerText=`${validateEmail(email)}`;
+        const errMessageElement = document.getElementById("email-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateEmail(email)}`;
         addForm.email.value = email;
         flag=false;
     } else{
@@ -100,9 +97,9 @@ addForm.addEventListener('submit',(e) => {
         document.getElementById("phone-no-error").style.display="none";
     }
     if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
-        const p = document.getElementById("skype-id-error");
-        p.style.display="block";
-        p.innerText=`${validateSkypeId(skypeId)}`;
+        const errMessageElement = document.getElementById("skype-id-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateSkypeId(skypeId)}`;
         addForm.skypeId.value = skypeId;
         flag=false;
     } else{
@@ -111,13 +108,12 @@ addForm.addEventListener('submit',(e) => {
 
     if(flag){
         createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
-        const div = document.createElement("div");
-        div.classList.add("popup")
-        div.id="saved-popup"
-        div.innerHTML=`<p>Saved</p>`
-        body = document.body;
-        body.appendChild(div);
-        setTimeout(() => div.remove(),3000);
+        const savedPopup = document.createElement("div");
+        savedPopup.classList.add("popup")
+        savedPopup.id="saved-popup"
+        savedPopup.innerHTML=`<p>Saved</p>`
+        document.body.appendChild(savedPopup);
+        setTimeout(() => savedPopup.remove(),3000);
         addForm.reset();
         modal.style.display="none";
     }
@@ -133,8 +129,6 @@ addForm.addEventListener('reset',(e) => {
 })
 
 inputSearch.addEventListener("input",(e) => {
-    // console.log(e);
-    // console.log(e.target.value);
     searchAndFilterEmployees();
 });
 
@@ -144,24 +138,20 @@ clearInput.addEventListener("click",() => {
 })
 
 propertyFilter.addEventListener("change",(e) => {
-    // console.log(e.target.value);
     searchAndFilterEmployees();
 });
 
 alphabetSearch.addEventListener("change",(e)=>{
-    // console.log(e.target.value);
     alphabet=e.target.value;
     searchAndFilterEmployees();
 })
 
 departmentFilter.addEventListener("change",(e)=>{
-    // console.log(e.target.value);
     department=e.target.value;
     searchAndFilterEmployees();
 })
 
 officeFilter.addEventListener("change",(e)=>{
-    // console.log(e.target.value);
     office=e.target.value;
     searchAndFilterEmployees();
 })
@@ -270,13 +260,12 @@ function setJobTitles(jobTitles){
 }
 
 function displayAlphabetSearchDiv(){
-    const div = document.getElementById("alphabet-search");
-    let r;
+    let alphabet;
     for(let i=65;i<=90;i++){
-        const d = document.createElement("div");
-        r=String.fromCharCode(i);
-        d.innerHTML=`<input type="radio" name="alphabet" class="alphabet-radio" value="${r}" id="${r}"><label for="${r}" class="blue-btn alphabet">${r}</label></div>`;
-        div.appendChild(d);
+        const alphabetElement = document.createElement("div");
+        alphabet=String.fromCharCode(i);
+        alphabetElement.innerHTML=`<input type="radio" name="alphabet" class="alphabet-radio" value="${alphabet}" id="${alphabet}"><label for="${alphabet}" class="blue-btn alphabet">${alphabet}</label></div>`;
+        alphabetSearch.appendChild(alphabetElement);
     }
 }
 
@@ -311,14 +300,13 @@ function displayEmployees(employees){
     } else {
         let name;
         employees.forEach(employee => {
-            const employeeDiv = document.createElement('div');
-            employeeDiv.classList.add("employee-div");
+            const employeeElement = document.createElement('div');
+            employeeElement.classList.add("employee-div");
     
-            const hiddenDiv = document.createElement('div');
-            hiddenDiv.id=employee.id;
-            hiddenDiv.classList.add("hidden-div");
-            // hiddenDiv.innerText = "hiddenDiv"
-            hiddenDiv.addEventListener('click',e => {
+            const hiddenElement = document.createElement('div');
+            hiddenElement.id=employee.id;
+            hiddenElement.classList.add("hidden-div");
+            hiddenElement.addEventListener('click',e => {
                 displayEmployeeDetails(e.target.id);
             })
     
@@ -338,9 +326,9 @@ function displayEmployees(employees){
                                         <div class="icon-div"><i class="fas fa-phone-square-alt" aria-hidden="true"></i><i class="fas fa-envelope" aria-hidden="true"></i><i class="fas fa-comment" aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-heart" aria-hidden="true"></i></div>
                                     </div>`
     
-            employeeDiv.appendChild(hiddenDiv);
-            employeeDiv.appendChild(employeeCard);
-            employeeGrid.appendChild(employeeDiv);
+            employeeElement.appendChild(hiddenElement);
+            employeeElement.appendChild(employeeCard);
+            employeeGrid.appendChild(employeeElement);
         });        
     }
 }
@@ -349,58 +337,25 @@ function displayEmployeeDetails(employeeId){
     modal.style.display="block";
     addForm.style.display="none";
     editForm.style.display="none";
-    modalDiv.style.display="block";
+    employeeDetailsElement.style.display="block";
 
     let employees = getEmployees();
     employees = employees.filter(employee => {
         return employee.id === employeeId;
     })
     const employee = employees[0]
-    modalDiv.innerHTML = `<div class="professional-details">
-                            <img class="employee-img" src="./img/user_icon.jpg" alt="employee_img">
-                            <div class="details-div">
-                                <h3 class="employee-name">${employee.preferredName}</h3>
-                                <div class="job-details">
-                                    <div class="property">
-                                        <p class="property-name">Job Title</p>
-                                        <p class="property-value">${employee.jobTitle}</p>
-                                    </div>
-                                    <div class="property">
-                                        <p class="property-name">Department</p>
-                                        <p class="property-value">${employee.department} Department</p>
-                                    </div>
-                                    <div class="property">
-                                        <p class="property-name">Office</p>
-                                        <p class="property-value"><i class="fas fa-map-marker-alt property-name"></i>${employee.office}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="personal-details">
-                            <div class="name-details">
-                                <div class="property">
-                                    <p class="property-name">First Name</p>
-                                    <p class="property-value">${employee.firstName}</p>
-                                </div>
-                                <div class="property">
-                                    <p class="property-name">Last Name</p>
-                                    <p class="property-value">${employee.lastName}</p>
-                                </div>
-                            </div>
-                            <div class="contact-details">
-                                <p class="property-value"><i class="fas fa-envelope property-name" aria-hidden="true"></i>${employee.email}</p>
-                                <p class="property-value"><i class="fab fa-skype property-name"></i>${employee.skypeId || "not provided"}</p>
-                                <p class="property-value"><i class="fas fa-phone-square-alt property-name" aria-hidden="true"></i></i>${employee.phoneNumber || "not provided"}</p>
-                            </div>
-                        </div>`
-    const editBtn = document.createElement("button")
-    editBtn.innerText="Edit"
-    editBtn.classList.add("blue-btn");
-    editBtn.classList.add("form-btn");
-    editBtn.addEventListener('click', () => {
+    document.getElementById("employee-name").innerText = `${employee.preferredName}`;
+    document.getElementById("employee-job-title").innerText = `${employee.jobTitle}`;
+    document.getElementById("employee-department").innerText = `${employee.department} Department`;
+    document.getElementById("employee-office").innerText = `${employee.office}`;
+    document.getElementById("employee-firstname").innerText = `${employee.firstName}`;
+    document.getElementById("employee-lastname").innerText = `${employee.lastName}`;
+    document.getElementById("employee-email").innerText = `${employee.email}`;
+    document.getElementById("employee-skype-id").innerText = `${employee.skypeId}` || `not provided`;
+    document.getElementById("employee-phone-no").innerText = `${employee.phoneNumber}` || `not provided`;
+    document.getElementById("edit-btn").onclick = () => {
         createEditForm(employee);
-    });
-    modalDiv.appendChild(editBtn);
+    };
 }
 
 function isAlpha(k){
@@ -496,7 +451,7 @@ function createEditForm(employee){
     modal.style.display="block";
     editForm.style.display="block";
     addForm.style.display="none";
-    modalDiv.style.display="none";
+    employeeDetailsElement.style.display="none";
 
     editForm.jobTitle.innerHTML="";
     editForm.office.innerHTML="";
@@ -561,30 +516,27 @@ function editEmployee(id){
     
     let flag=true;
     if (validateNameString(firstName).length !== 0){
-        // console.log(validateNameString(firstName))
-        const p = document.getElementById("editform-firstname-error");
-        p.style.display="block";
-        p.innerText=`${validateNameString(firstName)}`;
-        // errMessage(p,validateNameString(firstName));
+        const errMessageElement = document.getElementById("editform-firstname-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateNameString(firstName)}`;
         editForm.firstName.value = firstName;
         flag=false;
     } else{
         document.getElementById("editform-firstname-error").style.display="none";
     }
     if (validateNameString(lastName).length !== 0){
-        // console.log(validateNameString(firstName))
-        const p = document.getElementById("editform-lastname-error");
-        p.style.display="block";
-        p.innerText=`${validateNameString(lastName)}`;
+        const errMessageElement = document.getElementById("editform-lastname-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateNameString(lastName)}`;
         editForm.lastName.value = lastName;
         flag=false;
     } else{
         document.getElementById("editform-lastname-error").style.display="none";
     }
     if (validateEmail(email).length !== 0){
-        const p = document.getElementById("editform-email-error");
-        p.style.display="block";
-        p.innerText=`${validateEmail(email)}`;
+        const errMessageElement = document.getElementById("editform-email-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateEmail(email)}`;
         editForm.email.value = email;
         flag=false;
     } else{
@@ -598,9 +550,9 @@ function editEmployee(id){
         document.getElementById("editform-phone-no-error").style.display="none";
     }
     if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
-        const p = document.getElementById("editform-skype-id-error");
-        p.style.display="block";
-        p.innerText=`${validateSkypeId(skypeId)}`;
+        const errMessageElement = document.getElementById("editform-skype-id-error");
+        errMessageElement.style.display="block";
+        errMessageElement.innerText=`${validateSkypeId(skypeId)}`;
         editForm.skypeId.value = skypeId;
         flag=false;
     } else{
@@ -632,7 +584,6 @@ function editEmployee(id){
         temp[jobTitle]+=1;
         setJobTitles(temp);
     
-        // console.log(employee,form.firstName);
         employee.firstName = firstName
         employee.lastName = lastName
         employee.department = department
@@ -646,13 +597,12 @@ function editEmployee(id){
         employees.splice(index,employee);
     
         setEmployees(employees);
-        const div = document.createElement("div");
-        div.classList.add("popup");
-        div.id="updated-popup";
-        div.innerHTML=`<p>Updated</p>`;
-        body = document.body;
-        body.appendChild(div);
-        setTimeout(() => div.remove(),3000);
+        const updatedPopup = document.createElement("div");
+        updatedPopup.classList.add("popup");
+        updatedPopup.id="updated-popup";
+        updatedPopup.innerHTML=`<p>Updated</p>`;
+        document.body.appendChild(updatedPopup);
+        setTimeout(() => updatedPopup.remove(),3000);
         displayOffices();
         displayDepartments();
         displayJobTitles();
@@ -678,137 +628,124 @@ function toKebabCase(str){
 }
 
 function displayDepartments(){
-    const categoryOptions = document.getElementById("department-filter");
-    categoryOptions.innerHTML=`<li><input type="radio" name="department" class="side-filter-radio" value="" id="all-dept" checked><label for="all-dept" class="side-filter-label">All</label></li>`;
+    departmentFilter.innerHTML=`<li><input type="radio" name="department" class="side-filter-radio" value="" id="all-dept" checked><label for="all-dept" class="side-filter-label">All</label></li>`;
     const departments = getDepartments();
-    const span = document.createElement("span");
-    span.classList.add("less");
+    const moreCategoryOptions = document.createElement("span");
+    moreCategoryOptions.classList.add("hide");
     let c=0;
 
     for(key in departments){
-        // console.log(key);
-        const option = document.createElement("li");
+        const categoryOption = document.createElement("li");
         const id = toKebabCase(key);
-        option.innerHTML=`<input type="radio" name="department" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${departments[key]})</label>`
+        categoryOption.innerHTML=`<input type="radio" name="department" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${departments[key]})</label>`
         c+=1;
-        if(c<=5){
-            categoryOptions.appendChild(option);
+        if(c<=maxDisplayCount){
+            departmentFilter.appendChild(categoryOption);
         } else {
-            span.appendChild(option);
+            moreCategoryOptions.appendChild(categoryOption);
         }
     }
     
-    if(c>5){
+    if(c>maxDisplayCount){
         const viewMore = document.getElementById("department-view-more");
         const viewLess = document.getElementById("department-view-less");
         
-        viewMore.classList.remove("less");
-        viewLess.classList.add("less");
-        categoryOptions.appendChild(span);
+        viewMore.classList.remove("hide");
+        viewLess.classList.add("hide");
+        departmentFilter.appendChild(moreCategoryOptions);
 
         viewMore.addEventListener('click',() => {
-            // console.log("view more event");
-            viewMore.classList.add("less");
-            span.classList.remove("less");
-            // console.log("came here");
-            viewLess.classList.remove("less");
+            viewMore.classList.add("hide");
+            moreCategoryOptions.classList.remove("hide");
+            viewLess.classList.remove("hide");
         })
 
         viewLess.addEventListener('click',() => {
-            // console.log("view less event");
-            viewLess.classList.add("less");
-            span.classList.add("less");
-            viewMore.classList.remove("less");
+            viewLess.classList.add("hide");
+            moreCategoryOptions.classList.add("hide");
+            viewMore.classList.remove("hide");
         });
     }
 }
 
 function displayOffices(){
-    const categoryOptions = document.getElementById("office-filter");
-    categoryOptions.innerHTML=`<li><input type="radio" name="office" class="side-filter-radio" value="" id="all-office" checked><label for="all-office" class="side-filter-label">All</label></li>`
+    officeFilter.innerHTML=`<li><input type="radio" name="office" class="side-filter-radio" value="" id="all-office" checked><label for="all-office" class="side-filter-label">All</label></li>`
     const offices = getOffices();
-    const span = document.createElement("span");
-    span.classList.add("less");
+    const moreCategoryOptions = document.createElement("span");
+    moreCategoryOptions.classList.add("hide");
     let c=0;
 
     for(key in offices){
-        const option = document.createElement("li");
+        const categoryOption = document.createElement("li");
         const id = toKebabCase(key);
-        option.innerHTML=`<input type="radio" name="office" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${offices[key]})</label>`
+        categoryOption.innerHTML=`<input type="radio" name="office" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${offices[key]})</label>`
         c+=1;
-        if(c<=5){
-            categoryOptions.appendChild(option);
+        if(c<=maxDisplayCount){
+            officeFilter.appendChild(categoryOption);
         } else {
-            span.appendChild(option);
+            moreCategoryOptions.appendChild(categoryOption);
         }
     }
     
-    if(c>5){
+    if(c>maxDisplayCount){
         const viewMore = document.getElementById("office-view-more");
         const viewLess = document.getElementById("office-view-less");
         
-        viewMore.classList.remove("less");
-        viewLess.classList.add("less");
-        categoryOptions.appendChild(span);
+        viewMore.classList.remove("hide");
+        viewLess.classList.add("hide");
+        officeFilter.appendChild(moreCategoryOptions);
 
         viewMore.addEventListener('click',() => {
-            // console.log("view more event");
-            viewMore.classList.add("less");
-            span.classList.remove("less");
-            // console.log("came here");
-            viewLess.classList.remove("less");
+            viewMore.classList.add("hide");
+            moreCategoryOptions.classList.remove("hide");
+            viewLess.classList.remove("hide");
         })
 
         viewLess.addEventListener('click',() => {
-            // console.log("view less event");
-            viewLess.classList.add("less");
-            span.classList.add("less");
-            viewMore.classList.remove("less");
+            viewLess.classList.add("hide");
+            moreCategoryOptions.classList.add("hide");
+            viewMore.classList.remove("hide");
         });
     }
 }
 
 function displayJobTitles(){
-    const categoryOptions = document.getElementById("job-title-filter");
-    categoryOptions.innerHTML=`<li><input type="radio" name="jobTitle" class="side-filter-radio" value="" id="all-jobs" checked><label for="all-jobs" class="side-filter-label">All</label></li>`
+    jobTitleFilter.innerHTML=`<li><input type="radio" name="jobTitle" class="side-filter-radio" value="" id="all-jobs" checked><label for="all-jobs" class="side-filter-label">All</label></li>`
     const jobTitles = getJobTitles();
-    const span = document.createElement("span");
-    span.classList.add("less");
+    const moreCategoryOptions = document.createElement("span");
+    moreCategoryOptions.classList.add("hide");
     let c=0;
 
     for(key in jobTitles){
-        const option = document.createElement("li");
+        const categoryOption = document.createElement("li");
         const id = toKebabCase(key);
-        option.innerHTML=`<input type="radio" name="jobTitle" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${jobTitles[key]})</label>`
+        categoryOption.innerHTML=`<input type="radio" name="jobTitle" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${jobTitles[key]})</label>`
         c+=1;
-        if(c<=5){
-            categoryOptions.appendChild(option);
+        if(c<=maxDisplayCount){
+            jobTitleFilter.appendChild(categoryOption);
         } else {
-            span.appendChild(option);
+            moreCategoryOptions.appendChild(categoryOption);
         }
     }
     
-    if(c>5){
+    if(c>maxDisplayCount){
         const viewMore = document.getElementById("job-title-view-more");
         const viewLess = document.getElementById("job-title-view-less");
         
-        viewMore.classList.remove("less");
-        viewLess.classList.add("less");
-        categoryOptions.appendChild(span);
+        viewMore.classList.remove("hide");
+        viewLess.classList.add("hide");
+        jobTitleFilter.appendChild(moreCategoryOptions);
 
         viewMore.addEventListener('click',() => {
-            // console.log("view more event");
-            viewMore.classList.add("less");
-            span.classList.remove("less");
-            // console.log("came here");
-            viewLess.classList.remove("less");
+            viewMore.classList.add("hide");
+            moreCategoryOptions.classList.remove("hide");
+            viewLess.classList.remove("hide");
         })
 
         viewLess.addEventListener('click',() => {
-            // console.log("view less event");
-            viewLess.classList.add("less");
-            span.classList.add("less");
-            viewMore.classList.remove("less");
+            viewLess.classList.add("hide");
+            moreCategoryOptions.classList.add("hide");
+            viewMore.classList.remove("hide");
         });
     }
 }
@@ -818,11 +755,8 @@ function searchAndFilterEmployees(){
     const keyword = inputSearch.value.trim().toLowerCase();
     const property = propertyFilter.value;
     
-    // console.log("search called ",alphabet[0]);
     if(alphabet !== ""){
-        // console.log("came here");
         employees = employees.filter(employee =>{
-            // console.log(employee.preferredName)
             return employee.preferredName.charAt(0).toLowerCase() === alphabet.toLowerCase();
         })
     }

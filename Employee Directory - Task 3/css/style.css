@@ -161,7 +161,7 @@ main{
     cursor: pointer;
 }
 
-.less{
+.hide{
     display: none;
 }
 
@@ -480,7 +480,7 @@ label{
     border-bottom: 1px solid #999794;
 }
 
-.employee-name{
+#employee-name{
     font-size: 35px;
 }
 
@@ -514,7 +514,7 @@ label{
     justify-content: space-between;
 }
 
-#modal-div i{
+#employee-details i{
     margin-right: 5px;
 }
 

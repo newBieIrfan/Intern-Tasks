@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Directory</title>
     <script src="https://kit.fontawesome.com/ce382a7b1c.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="container">
@@ -30,20 +31,20 @@
             <div class="category">
                 <p class="category-name">Departments</p>
                 <ul class="category-options" id="department-filter"></ul>
-                <p id="department-view-more" class="view-more less">view more</p>
-                <p id="department-view-less" class="view-less less">view less</p>
+                <p id="department-view-more" class="view-more hide">view more</p>
+                <p id="department-view-less" class="view-less hide">view less</p>
             </div>
             <div class="category">
                 <p class="category-name">Offices</p>
                 <ul class="category-options" id="office-filter"></ul>
-                <p id="office-view-more" class="view-more less">view more</p>
-                <p id="office-view-less" class="view-less less">view less</p>
+                <p id="office-view-more" class="view-more hide">view more</p>
+                <p id="office-view-less" class="view-less hide">view less</p>
             </div>
             <div class="category">
                 <p class="category-name">Job Titles</p>
                 <ul class="category-options" id="job-title-filter"></ul>
-                <p id="job-title-view-more" class="view-more less">view more</p>
-                <p id="job-title-view-less" class="view-less less">view less</p>
+                <p id="job-title-view-more" class="view-more hide">view more</p>
+                <p id="job-title-view-less" class="view-less hide">view less</p>
             </div>
         </div>
         <div class="content-div">
@@ -196,7 +197,46 @@
                 <button type="submit" class="blue-btn form-btn">Save</button>
                 <button type="reset" class="blue-btn form-btn">Cancel</button>
             </form>
-            <div id="modal-div"></div>
+            <div id="employee-details">
+                <div class="professional-details">
+                    <img class="employee-img" src="./img/user_icon.jpg" alt="employee_img">
+                    <div class="details-div">
+                        <h3 id="employee-name"></h3>
+                        <div class="job-details">
+                            <div class="property">
+                                <p class="property-name">Job Title</p>
+                                <p class="property-value" id="employee-job-title"></p>
+                            </div>
+                            <div class="property">
+                                <p class="property-name">Department</p>
+                                <p class="property-value" id="employee-department"></p>
+                            </div>
+                            <div class="property">
+                                <p class="property-name">Office</p>
+                                <p class="property-value"><i class="fas fa-map-marker-alt property-name"></i><span id="employee-office"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="personal-details">
+                    <div class="name-details">
+                        <div class="property">
+                            <p class="property-name">First Name</p>
+                            <p class="property-value" id="employee-firstname"></p>
+                        </div>
+                        <div class="property">
+                            <p class="property-name">Last Name</p>
+                            <p class="property-value" id="employee-lastname"></p>
+                        </div>
+                    </div>
+                    <div class="contact-details">
+                        <p class="property-value"><i class="fas fa-envelope property-name" aria-hidden="true"></i><span id="employee-email"></span></p>
+                        <p class="property-value"><i class="fab fa-skype property-name"></i><span id="employee-skype-id"></span></p>
+                        <p class="property-value"><i class="fas fa-phone-square-alt property-name" aria-hidden="true"></i></i><span id="employee-phone-no"></span></p>
+                    </div>
+                </div>
+                <button class="blue-btn form-btn" id="edit-btn">Edit</button>
+            </div>
         </div>
     </div>
     <script src="./js/app.js"></script>
