@@ -1,11 +1,9 @@
 const modal = $("#modal-form");
 const addEmployeeBtn = $("#add-employee-btn");
 const closeBtn = $("#close");
-const addForm = $("#employee-add-form");
-const editForm = $("#employee-edit-form");
+const employeeForm = $("#employee-form");
 const employeeDetailsElement = $("#employee-details");
 const employeeGrid = $("#employee-grid");
-const sideFilter = $("#side-filter")
 const inputSearch = $("#search-input");
 const clearInput = $("#clear-button");
 const propertyFilter = $("#property-filter");
@@ -15,14 +13,13 @@ const officeFilter = $("#office-filter");
 const jobTitleFilter = $("#job-title-filter");
 const maxDisplayCount = 5;
 
+
 var alphabet="";
 var department="";
 var office="";
 var jobTitle=""
 
 $(document).ready(() => {
-    createAddForm();
-
     displayAlphabetSearchDiv();
 
     const employees = getEmployees();
@@ -33,10 +30,7 @@ $(document).ready(() => {
 });
 
 addEmployeeBtn.click((e) => {
-    modal.show();
-    addForm.show();
-    editForm.hide();
-    employeeDetailsElement.hide();
+    createAddForm()
 });
 
 closeBtn.click(() => {
@@ -48,82 +42,6 @@ $(window).click((event) => {
         modal.hide();
     }
 });
-
-addForm.on('submit',(e) => {
-    e.preventDefault();
-
-    let firstName = $("#firstname").val().trim();
-    let lastName = $("#lastname").val().trim()
-    let email = $("#email").val().trim();
-    let jobTitle = $("#job-title").val().trim();
-    let office = $("#office").val().trim();
-    let department = $("#department").val().trim();
-    let phoneNumber = $("#phone-no").val().trim();
-    let skypeId = $("#skype-id").val().trim();
- 
-    let flag=true;
-    if (validateNameString(firstName).length !== 0){
-        const errMessageElement = $("#firstname-error");
-        errMessageElement.show();
-        errMessageElement.text(`${validateNameString(firstName)}`);
-        $("#firstname").val(firstName);
-        flag=false;
-    } else{
-        $("#firstname-error").hide();
-    }
-    if (validateNameString(lastName).length !== 0){
-        const errMessageElement = $("#lastname-error");
-        errMessageElement.show();
-        errMessageElement.text(`${validateNameString(lastName)}`);
-        $("#lastname").val(lastName);
-        flag=false;
-    } else{
-        $("#lastname-error").hide();
-    }
-    if (validateEmail(email).length !== 0){
-        const errMessageElement = $("#email-error");
-        errMessageElement.show();
-        errMessageElement.text(`${validateEmail(email)}`);
-        $("#email").val(email);
-        flag=false;
-    } else{
-        $("#email-error").hide();
-    }
-    if(phoneNumber.length>0 && phoneNumber.length !== 10){
-        $("#phone-no-error").show();
-        $("#phone-no").val(phoneNumber);
-        flag=false;
-    } else{
-        $("#phone-no-error").hide();
-    }
-    if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
-        const errMessageElement = $("#skype-id-error");
-        errMessageElement.show();
-        errMessageElement.text(`${validateSkypeId(skypeId)}`);
-        $("#skype-id").val(skypeId);
-        flag=false;
-    } else{
-        $("#skype-id-error").hide();
-    }
-
-    if(flag){
-        createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
-        const savedPopup = $(`<div class="popup" id="saved-popup"><p>Saved</p></div>`);
-        $(document.body).append(savedPopup);
-        setTimeout(() => savedPopup.remove(),3000);
-        addForm.reset();
-        modal.hide();
-    }
-
-});
-
-addForm.on('reset',(e) => {
-    $("#firstname-error").hide();
-    $("#lastname-error").hide();
-    $("#email-error").hide();
-    $("#phone-no-error").hide();
-    $("#skype-id-error").hide();
-})
 
 inputSearch.on("input",(e) => {
     searchAndFilterEmployees();
@@ -256,6 +174,12 @@ function setJobTitles(jobTitles){
     localStorage.setItem("jobTitles",JSON.stringify(jobTitles));
 }
 
+function displayPopup(type){
+    const popup = $(`<div class="popup" id="${type.toLowerCase()}-popup"><p>${type}</p></div>`);
+    $(document.body).append(popup);
+    setTimeout(() => popup.remove(),3000);
+}
+
 function displayAlphabetSearchDiv(){
     let alphabet;
     for(let i=65;i<=90;i++){
@@ -281,11 +205,6 @@ function addEmployee(newEmployee){
     temp = getJobTitles();
     temp[newEmployee.jobTitle]+=1;
     setJobTitles(temp);
-
-    displayDepartments();
-    displayOffices();
-    displayJobTitles();
-    searchAndFilterEmployees();
 }
 
 function displayEmployees(employees){
@@ -324,8 +243,7 @@ function displayEmployees(employees){
 
 function displayEmployeeDetails(employeeId){
     modal.show();
-    addForm.hide();
-    editForm.hide();
+    employeeForm.hide();
     employeeDetailsElement.show();
 
     let employees = getEmployees();
@@ -342,9 +260,11 @@ function displayEmployeeDetails(employeeId){
     $("#employee-email").text(`${employee.email}`);
     $("#employee-skype-id").text(`${employee.skypeId}` || `not provided`);
     $("#employee-phone-no").text(`${employee.phoneNumber}` || `not provided`);
-    document.getElementById("edit-btn").onclick = () => {
+
+    $("#edit-btn").off();
+    $("#edit-btn").on("click",() => {
         createEditForm(employee);
-    };
+    });
 }
 
 function isAlpha(k){
@@ -401,206 +321,239 @@ function validateSkypeId(skypeId){
 }
 
 function createAddForm(){
+    modal.show();
+    employeeForm.show();
+    employeeDetailsElement.hide();
+
+    $("#firstname").val("");
+    $("#lastname").val("");
+    $("#email").val("");
+    $("#phone-no").val("");
+    $("#skype-id").val("");
+
     $("#job-title").html("");
     $("#department").html("");
     $("#office").html("");
 
-    let c=1;
+    let isFirstOption=true;
     for(key in getJobTitles()){
-        if(c===1){
+        if(isFirstOption){
             $("#job-title").append(`<option value="${key}" selected>${key}</option>`);
-            c+=1;
+            isFirstOption = false;
         } else {
             $("#job-title").append(`<option value="${key}">${key}</option>`);
         }
     }
     
-    c=1;
+    isFirstOption=true;
     for(key in getDepartments()){
-        if(c===1){
+        if(isFirstOption){
             $("#department").append(`<option value="${key}" selected>${key}</option>`);
-            c+=1;
+            isFirstOption = false;
         } else {
             $("#department").append(`<option value="${key}">${key}</option>`);
         }
     }
     
-    c=1;
+    isFirstOption=true;
     for(key in getOffices()){
-        if(c===1){
+        if(isFirstOption){
             $("#office").append(`<option value="${key}" selected>${key}</option>`);
-            c+=1;
+            isFirstOption = false;
         } else {
             $("#office").append(`<option value="${key}">${key}</option>`);
         }
     }
+
+    $("#reset-button").text("Reset");
+
+    employeeForm.off();
+
+    employeeForm.on("submit",(e) => {
+        e.preventDefault();
+        addAndEditEmployee("");
+    });
+
+    employeeForm.on("reset",(e) => {
+        $("#firstname-error").hide();
+        $("#lastname-error").hide();
+        $("#email-error").hide();
+        $("#phone-no-error").hide();
+        $("#skype-id-error").hide();
+    });
 }
 
 function createEditForm(employee){
     modal.show();
-    editForm.show();
-    addForm.hide();
+    employeeForm.show();;
     employeeDetailsElement.hide();
 
-    $("#edit-job-title").html("");
-    $("#edit-office").html("");
-    $("#edit-department").html("");
+    $("#firstname").val(employee.firstName);
+    $("#lastname").val(employee.lastName);
+    $("#email").val(employee.email);
+    $("#phone-no").val(employee.phoneNumber);
+    $("#skype-id").val(employee.skypeId);
 
-    $("#edit-firstname").val(employee.firstName);
-    $("#edit-lastname").val(employee.lastName);
-    $("#edit-email").val(employee.email);
-    $("#edit-phone-no").val(employee.phoneNumber);
-    $("#edit-skype-id").val(employee.skypeId);
+    $("#job-title").html("");
+    $("#office").html("");
+    $("#department").html("");
+
     
     for(key in getJobTitles()){
         if(key === employee.jobTitle){
-            $("#edit-job-title").append(`<option value="${key}" selected>${key}</option>`);
+            $("#job-title").append(`<option value="${key}" selected>${key}</option>`);
         } else{
-            $("#edit-job-title").append(`<option value="${key}">${key}</option>`);
+            $("#job-title").append(`<option value="${key}">${key}</option>`);
         }
     }
     for(key in getDepartments()){
         if(key === employee.department){
-            $("#edit-department").append(`<option value="${key}" selected>${key}</option>`);
+            $("#department").append(`<option value="${key}" selected>${key}</option>`);
         } else{
-            $("#edit-department").append(`<option value="${key}">${key}</option>`);
+            $("#department").append(`<option value="${key}">${key}</option>`);
         }
     }
     for(key in getOffices()){
         if(key === employee.office){
-            $("#edit-office").append(`<option value="${key}" selected>${key}</option>`);
+            $("#office").append(`<option value="${key}" selected>${key}</option>`);
         } else{
-            $("#edit-office").append(`<option value="${key}">${key}</option>`);
+            $("#office").append(`<option value="${key}">${key}</option>`);
         }
     }
 
-    $("#editform-firstname-error").hide();
-    $("#editform-lastname-error").hide();
-    $("#editform-email-error").hide();
-    $("#editform-phone-no-error").hide();
-    $("#editform-skype-id-error").hide();
+    $("#reset-button").text("Cancel");
 
-    editForm.on('submit',(e) => {
+    $("#firstname-error").hide();
+    $("#lastname-error").hide();
+    $("#email-error").hide();
+    $("#phone-no-error").hide();
+    $("#skype-id-error").hide();
+
+    employeeForm.off();
+
+    employeeForm.on("submit",(e) => {
+        console.log("came here");
         e.preventDefault();
-        editEmployee(employee.id);
+        addAndEditEmployee(employee.id);
     });
 
-    editForm.on('reset',(e)=>{
+    employeeForm.on("reset",(e)=>{
         e.preventDefault();
         displayEmployeeDetails(employee.id);
     });
 }
 
-function editEmployee(id){
-    let employees = getEmployees();
-
-    let firstName = $("#edit-firstname").val().trim();
-    let lastName = $("#edit-lastname").val().trim()
-    let email = $("#edit-email").val().trim();
-    let jobTitle = $("#edit-job-title").val().trim();
-    let office = $("#edit-office").val().trim();
-    let department = $("#edit-department").val().trim();
-    let phoneNumber = $("#edit-phone-no").val().trim();
-    let skypeId = $("#edit-skype-id").val().trim();
-    
+function addAndEditEmployee(id){
+    let firstName = $("#firstname").val().trim();
+    let lastName = $("#lastname").val().trim()
+    let email = $("#email").val().trim();
+    let jobTitle = $("#job-title").val().trim();
+    let office = $("#office").val().trim();
+    let department = $("#department").val().trim();
+    let phoneNumber = $("#phone-no").val().trim();
+    let skypeId = $("#skype-id").val().trim();
+ 
     let flag=true;
     if (validateNameString(firstName).length !== 0){
-        const errMessageElement = $("#editform-firstname-error");
+        const errMessageElement = $("#firstname-error");
         errMessageElement.show();
         errMessageElement.text(`${validateNameString(firstName)}`);
-        $("#edit-firstname").val(firstName);
+        $("#firstname").val(firstName);
         flag=false;
     } else{
-        $("#editform-firstname-error").hide();
+        $("#firstname-error").hide();
     }
     if (validateNameString(lastName).length !== 0){
-        const errMessageElement = $("#editform-lastname-error");
+        const errMessageElement = $("#lastname-error");
         errMessageElement.show();
         errMessageElement.text(`${validateNameString(lastName)}`);
-        $("#edit-lastname").val(lastName);
+        $("#lastname").val(lastName);
         flag=false;
     } else{
-        $("#editform-lastname-error").hide();
+        $("#lastname-error").hide();
     }
     if (validateEmail(email).length !== 0){
-        const errMessageElement = $("#editform-email-error");
+        const errMessageElement = $("#email-error");
         errMessageElement.show();
         errMessageElement.text(`${validateEmail(email)}`);
-        $("#edit-email").val(email);
+        $("#email").val(email);
         flag=false;
     } else{
-        $("#editform-email-error").hide();
+        $("#email-error").hide();
     }
     if(phoneNumber.length>0 && phoneNumber.length !== 10){
-        $("#editform-phone-no-error").show();
-        $("#edit-phone-no").val(phoneNumber);
+        $("#phone-no-error").show();
+        $("#phone-no").val(phoneNumber);
         flag=false;
     } else{
-        $("#editform-phone-no-error").hide();
+        $("#phone-no-error").hide();
     }
     if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
-        const errMessageElement = $("#editform-skype-id-error");
+        const errMessageElement = $("#skype-id-error");
         errMessageElement.show();
         errMessageElement.text(`${validateSkypeId(skypeId)}`);
-        $("#edit-skyped-id").val(skypeId);
+        $("#skype-id").val(skypeId);
         flag=false;
     } else{
-        $("#editform-skype-id-error").hide();
+        $("#skype-id-error").hide();
     }
 
     if(flag){
-        let employee,index;
-        for(const [i,v] of employees.entries()){
-            if(v.id===id){
-                employee=v;
-                index=i;
-                break;
-            }
+        if(id!==""){
+            editEmployee(id,firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
+            displayPopup("Updated");
+            displayEmployeeDetails(id);
+        } else {
+            createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
+            displayPopup("Saved");
+            modal.hide();
         }
-    
-        let temp = getDepartments();
-        temp[employee.department]-=1;
-        temp[department]+=1;
-        setDepartments(temp);
-    
-        temp = getOffices();
-        temp[employee.office]-=1;
-        temp[office]+=1;
-        setOffices(temp);
-    
-        temp = getJobTitles();
-        temp[employee.jobTitle]-=1;
-        temp[jobTitle]+=1;
-        setJobTitles(temp);
-    
-        employee.firstName = firstName
-        employee.lastName = lastName
-        employee.department = department
-        employee.email = email
-        employee.jobTitle = jobTitle
-        employee.office= office
-        employee.phoneNumber = phoneNumber
-        employee.skypeId = skypeId
-        employee.preferredName = employee.firstName+" "+employee.lastName;
-    
-        employees.splice(index,employee);
-    
-        setEmployees(employees);
-        const updatedPopup = $(`<div class="popup" id="updated-popup"><p>Updated</p></div>`);
-        $(document.body).append(updatedPopup);
-        setTimeout(() => updatedPopup.remove(),3000);
+
         displayOffices();
         displayDepartments();
         displayJobTitles();
         searchAndFilterEmployees();
-        displayEmployeeDetails(id);
     }
 }
 
-function errMessage(ele,msg){
-    ele.innerText=`${msg}`;
-    ele.style.display="block";
-    setTimeout(() => {ele.style.display="none"},5000);
+function editEmployee(id,firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId){
+    let employees = getEmployees();
+    let employee,index;
+    for(const [i,v] of employees.entries()){
+        if(v.id===id){
+            employee=v;
+            index=i;
+            break;
+        }
+    }
+
+    let temp = getDepartments();
+    temp[employee.department]-=1;
+    temp[department]+=1;
+    setDepartments(temp);
+
+    temp = getOffices();
+    temp[employee.office]-=1;
+    temp[office]+=1;
+    setOffices(temp);
+
+    temp = getJobTitles();
+    temp[employee.jobTitle]-=1;
+    temp[jobTitle]+=1;
+    setJobTitles(temp);
+
+    employee.firstName = firstName
+    employee.lastName = lastName
+    employee.department = department
+    employee.email = email
+    employee.jobTitle = jobTitle
+    employee.office= office
+    employee.phoneNumber = phoneNumber
+    employee.skypeId = skypeId
+    employee.preferredName = employee.firstName+" "+employee.lastName;
+
+    employees.splice(index,employee);
+    setEmployees(employees);
 }
 
 function toKebabCase(str){
@@ -616,20 +569,20 @@ function displayDepartments(){
     departmentFilter.html(`<li><input type="radio" name="department" class="side-filter-radio" value="" id="all-dept" checked><label for="all-dept" class="side-filter-label">All</label></li>`);
     const departments = getDepartments();
     const moreCategoryOptions = $(`<span class="hide"></span>`)
-    let c=0;
+    let displayCount=0;
 
     for(key in departments){
         const id = toKebabCase(key);
         categoryOption=$(`<li><input type="radio" name="department" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${departments[key]})</label></li>`);
-        c+=1;
-        if(c<=maxDisplayCount){
+        displayCount+=1;
+        if(displayCount<=maxDisplayCount){
             departmentFilter.append(categoryOption);
         } else {
             moreCategoryOptions.append(categoryOption);
         }
     }
     
-    if(c>maxDisplayCount){
+    if(displayCount>maxDisplayCount){
         const viewMore = $("#job-title-view-more");
         const viewLess = $("#job-title-view-less");
         
@@ -655,20 +608,20 @@ function displayOffices(){
     officeFilter.html(`<li><input type="radio" name="office" class="side-filter-radio" value="" id="all-office" checked><label for="all-office" class="side-filter-label">All</label></li>`);
     const offices = getOffices();
     const moreCategoryOptions = $(`<span class="hide"></span>`)
-    let c=0;
+    let displayCount=0;
 
     for(key in offices){
         const id = toKebabCase(key);
         categoryOption=$(`<li><input type="radio" name="office" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${offices[key]})</label></li>`);
-        c+=1;
-        if(c<=maxDisplayCount){
+        displayCount+=1;
+        if(displayCount<=maxDisplayCount){
             officeFilter.append(categoryOption);
         } else {
             moreCategoryOptions.append(categoryOption);
         }
     }
     
-    if(c>maxDisplayCount){
+    if(displayCount>maxDisplayCount){
         const viewMore = $("#office-view-more");
         const viewLess = $("#office-view-less");
         
@@ -694,20 +647,20 @@ function displayJobTitles(){
     jobTitleFilter.html(`<li><input type="radio" name="jobTitle" class="side-filter-radio" value="" id="all-jobs" checked><label for="all-jobs" class="side-filter-label">All</label></li>`);
     const jobTitles = getJobTitles();
     const moreCategoryOptions = $(`<span class="hide"></span>`)
-    let c=0;
+    let displayCount=0;
 
     for(key in jobTitles){
         const id = toKebabCase(key);
         categoryOption=$(`<li><input type="radio" name="jobTitle" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${jobTitles[key]})</label></li>`);
-        c+=1;
-        if(c<=maxDisplayCount){
+        displayCount+=1;
+        if(displayCount<=maxDisplayCount){
             jobTitleFilter.append(categoryOption);
         } else {
             moreCategoryOptions.append(categoryOption);
         }
     }
     
-    if(c>maxDisplayCount){
+    if(displayCount>maxDisplayCount){
         const viewMore = $("#job-title-view-more");
         const viewLess = $("#job-title-view-less");
         

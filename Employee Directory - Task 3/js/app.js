@@ -1,11 +1,9 @@
 const modal = document.getElementById("modal-form");
 const addEmployeeBtn = document.getElementById("add-employee-btn");
 const closeBtn = document.getElementById("close");
-const addForm = document.getElementById("employee-add-form");
-const editForm = document.getElementById("employee-edit-form");
+const employeeForm = document.getElementById("employee-form");
 const employeeDetailsElement = document.getElementById("employee-details");
 const employeeGrid = document.getElementById("employee-grid");
-const sideFilter = document.getElementById("side-filter")
 const inputSearch = document.getElementById("search-input");
 const clearInput = document.getElementById("clear-button");
 const propertyFilter = document.getElementById("property-filter");
@@ -21,8 +19,6 @@ var office="";
 var jobTitle=""
 
 document.addEventListener('DOMContentLoaded',() => {
-    createAddForm();
-
     displayAlphabetSearchDiv();
 
     const employees = getEmployees();
@@ -33,10 +29,7 @@ document.addEventListener('DOMContentLoaded',() => {
 });
 
 addEmployeeBtn.addEventListener('click',(e) => {
-    modal.style.display = "block";
-    addForm.style.display = "block";
-    editForm.style.display = "none";
-    employeeDetailsElement.style.display = "none";
+    createAddForm();
 });
 
 closeBtn.addEventListener('click',() => {
@@ -48,85 +41,6 @@ window.addEventListener('click',(event) => {
         modal.style.display = "none";
     }
 });
-
-addForm.addEventListener('submit',(e) => {
-    e.preventDefault();
-
-    let firstName = addForm.firstName.value.trim();
-    let lastName = addForm.lastName.value.trim()
-    let email = addForm.email.value.trim();
-    let jobTitle = addForm.jobTitle.value.trim();
-    let office = addForm.office.value.trim();
-    let department = addForm.department.value.trim();
-    let phoneNumber = addForm.phoneNumber.value.trim();
-    let skypeId = addForm.skypeId.value.trim();
-    
-    let flag=true;
-    if (validateNameString(firstName).length !== 0){
-        const errMessageElement = document.getElementById("firstname-error");
-        errMessageElement.style.display="block";
-        errMessageElement.innerText=`${validateNameString(firstName)}`;
-        addForm.firstName.value = firstName;
-        flag=false;
-    } else{
-        document.getElementById("firstname-error").style.display="none";
-    }
-    if (validateNameString(lastName).length !== 0){
-        const errMessageElement = document.getElementById("lastname-error");
-        errMessageElement.style.display="block";
-        errMessageElement.innerText=`${validateNameString(lastName)}`;
-        addForm.lastName.value = lastName;
-        flag=false;
-    } else{
-        document.getElementById("lastname-error").style.display="none";
-    }
-    if (validateEmail(email).length !== 0){
-        const errMessageElement = document.getElementById("email-error");
-        errMessageElement.style.display="block";
-        errMessageElement.innerText=`${validateEmail(email)}`;
-        addForm.email.value = email;
-        flag=false;
-    } else{
-        document.getElementById("email-error").style.display="none";
-    }
-    if(phoneNumber.length>0 && phoneNumber.length !== 10){
-        document.getElementById("phone-no-error").style.display="block";
-        addForm.phoneNumber.value = phoneNumber;
-        flag=false;
-    } else{
-        document.getElementById("phone-no-error").style.display="none";
-    }
-    if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
-        const errMessageElement = document.getElementById("skype-id-error");
-        errMessageElement.style.display="block";
-        errMessageElement.innerText=`${validateSkypeId(skypeId)}`;
-        addForm.skypeId.value = skypeId;
-        flag=false;
-    } else{
-        document.getElementById("skype-id-error").style.display="none";
-    }
-
-    if(flag){
-        createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
-        const savedPopup = document.createElement("div");
-        savedPopup.classList.add("popup")
-        savedPopup.id="saved-popup"
-        savedPopup.innerHTML=`<p>Saved</p>`
-        document.body.appendChild(savedPopup);
-        setTimeout(() => savedPopup.remove(),3000);
-        addForm.reset();
-        modal.style.display="none";
-    }
-
-});
-
-addForm.addEventListener('reset',(e) => {
-    document.getElementById("firstname-error").style.display="none";
-    document.getElementById("lastname-error").style.display="none";
-    document.getElementById("email-error").style.display="none";
-    document.getElementById("phone-no-error").style.display="none";
-    document.getElementById("skype-id-error").style.display="none";
-})
 
 inputSearch.addEventListener("input",(e) => {
     searchAndFilterEmployees();
@@ -259,6 +173,15 @@ function setJobTitles(jobTitles){
     localStorage.setItem("jobTitles",JSON.stringify(jobTitles));
 }
 
+function displayPopup(type){
+    const popup = document.createElement("div");
+    popup.classList.add("popup");
+    popup.id = `${type.toLowerCase()}-popup`;
+    popup.innerHTML = `<p>${type}</p>`;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(),3000);
+}
+
 function displayAlphabetSearchDiv(){
     let alphabet;
     for(let i=65;i<=90;i++){
@@ -285,11 +208,6 @@ function addEmployee(newEmployee){
     temp = getJobTitles();
     temp[newEmployee.jobTitle]+=1;
     setJobTitles(temp);
-
-    displayDepartments();
-    displayOffices();
-    displayJobTitles();
-    searchAndFilterEmployees();
 }
 
 function displayEmployees(employees){
@@ -335,8 +253,7 @@ function displayEmployees(employees){
 
 function displayEmployeeDetails(employeeId){
     modal.style.display="block";
-    addForm.style.display="none";
-    editForm.style.display="none";
+    employeeForm.style.display="none";
     employeeDetailsElement.style.display="block";
 
     let employees = getEmployees();
@@ -412,210 +329,235 @@ function validateSkypeId(skypeId){
 }
 
 function createAddForm(){
-    addForm.jobTitle.innerHTML="";
-    addForm.department.innerHTML="";
-    addForm.office.innerHTML="";
+    modal.style.display = "block";
+    employeeForm.style.display = "block";
+    employeeDetailsElement.style.display = "none";
 
-    let c=1;
+    employeeForm.firstName.value = "";
+    employeeForm.lastName.value = "";
+    employeeForm.email.value = "";
+    employeeForm.phoneNumber.value = "";
+    employeeForm.skypeId.value = "";
+
+    employeeForm.jobTitle.innerHTML="";
+    employeeForm.department.innerHTML="";
+    employeeForm.office.innerHTML="";
+
+    let isFirstOption = true;
     for(key in getJobTitles()){
-        if(c===1){
-            addForm.jobTitle.innerHTML+=`<option value="${key}" selected>${key}</option>`;
-            c+=1;
+        if(isFirstOption){
+            employeeForm.jobTitle.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            isFirstOption = false;
         } else {
-            addForm.jobTitle.innerHTML+=`<option value="${key}">${key}</option>`
+            employeeForm.jobTitle.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
     
-    c=1;
+    isFirstOption = true;
     for(key in getDepartments()){
-        if(c===1){
-            addForm.department.innerHTML+=`<option value="${key}" selected>${key}</option>`;
-            c+=1;
+        if(isFirstOption){
+            employeeForm.department.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            isFirstOption = false;
         } else {
-            addForm.department.innerHTML+=`<option value="${key}">${key}</option>`;
+            employeeForm.department.innerHTML+=`<option value="${key}">${key}</option>`;
         }
     }
     
-    c=1;
+    isFirstOption = true;
     for(key in getOffices()){
-        if(c===1){
-            addForm.office.innerHTML+=`<option value="${key}" selected>${key}</option>`;
-            c+=1;
+        if(isFirstOption){
+            employeeForm.office.innerHTML+=`<option value="${key}" selected>${key}</option>`;
+            isFirstOption = false;
         } else {
-            addForm.office.innerHTML+=`<option value="${key}">${key}</option>`
+            employeeForm.office.innerHTML+=`<option value="${key}">${key}</option>`
         }
+    }
+
+    document.getElementById("reset-button").innerText = `Reset`;
+
+    employeeForm.onsubmit = (e) => {
+        e.preventDefault();
+        addAndEditEmployee("");
+    }
+
+    employeeForm.onreset = (e) => {
+        document.getElementById("firstname-error").style.display="none";
+        document.getElementById("lastname-error").style.display="none";
+        document.getElementById("email-error").style.display="none";
+        document.getElementById("phone-no-error").style.display="none";
+        document.getElementById("skype-id-error").style.display="none";   
     }
 }
 
 function createEditForm(employee){
     modal.style.display="block";
-    editForm.style.display="block";
-    addForm.style.display="none";
+    employeeForm.style.display="block";
     employeeDetailsElement.style.display="none";
+    
+    employeeForm.firstName.value = employee.firstName;
+    employeeForm.lastName.value = employee.lastName;
+    employeeForm.email.value = employee.email;
+    employeeForm.phoneNumber.value = employee.phoneNumber;
+    employeeForm.skypeId.value = employee.skypeId;
 
-    editForm.jobTitle.innerHTML="";
-    editForm.office.innerHTML="";
-    editForm.department.innerHTML="";
+    employeeForm.jobTitle.innerHTML="";
+    employeeForm.office.innerHTML="";
+    employeeForm.department.innerHTML="";
 
-    editForm.firstName.value = employee.firstName;
-    editForm.lastName.value = employee.lastName;
-    editForm.email.value = employee.email;
-    editForm.phoneNumber.value = employee.phoneNumber;
-    editForm.skypeId.value = employee.skypeId;
     
     for(key in getJobTitles()){
         if(key === employee.jobTitle){
-            editForm.jobTitle.innerHTML+=`<option value="${key}" selected>${key}</option>`
+            employeeForm.jobTitle.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            editForm.jobTitle.innerHTML+=`<option value="${key}">${key}</option>`
+            employeeForm.jobTitle.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
     for(key in getDepartments()){
         if(key === employee.department){
-            editForm.department.innerHTML+=`<option value="${key}" selected>${key}</option>`
+            employeeForm.department.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            editForm.department.innerHTML+=`<option value="${key}">${key}</option>`
+            employeeForm.department.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
     for(key in getOffices()){
         if(key === employee.office){
-            editForm.office.innerHTML+=`<option value="${key}" selected>${key}</option>`
+            employeeForm.office.innerHTML+=`<option value="${key}" selected>${key}</option>`
         } else{
-            editForm.office.innerHTML+=`<option value="${key}">${key}</option>`
+            employeeForm.office.innerHTML+=`<option value="${key}">${key}</option>`
         }
     }
 
-    document.getElementById("editform-firstname-error").style.display="none";
-    document.getElementById("editform-lastname-error").style.display="none";
-    document.getElementById("editform-email-error").style.display="none";
-    document.getElementById("editform-phone-no-error").style.display="none";
-    document.getElementById("editform-skype-id-error").style.display="none";
+    document.getElementById("reset-button").innerText = `Cancel`;
 
-    editForm.onsubmit = (e) => {
+    document.getElementById("firstname-error").style.display="none";
+    document.getElementById("lastname-error").style.display="none";
+    document.getElementById("email-error").style.display="none";
+    document.getElementById("phone-no-error").style.display="none";
+    document.getElementById("skype-id-error").style.display="none";
+
+    employeeForm.onsubmit = (e) => {
         e.preventDefault();
-        editEmployee(employee.id);
+        addAndEditEmployee(employee.id);
     };
 
-    editForm.onreset = (e)=>{
+    employeeForm.onreset = (e)=>{
         e.preventDefault();
         displayEmployeeDetails(employee.id);
     };
 }
 
-function editEmployee(id){
-    let employees = getEmployees();
-
-    let firstName = editForm.firstName.value.trim();
-    let lastName = editForm.lastName.value.trim()
-    let email = editForm.email.value.trim();
-    let jobTitle = editForm.jobTitle.value.trim();
-    let office = editForm.office.value.trim();
-    let department = editForm.department.value.trim();
-    let phoneNumber = editForm.phoneNumber.value.trim();
-    let skypeId = editForm.skypeId.value.trim();
+function addAndEditEmployee(id){
+    let firstName = employeeForm.firstName.value.trim();
+    let lastName = employeeForm.lastName.value.trim()
+    let email = employeeForm.email.value.trim();
+    let jobTitle = employeeForm.jobTitle.value.trim();
+    let office = employeeForm.office.value.trim();
+    let department = employeeForm.department.value.trim();
+    let phoneNumber = employeeForm.phoneNumber.value.trim();
+    let skypeId = employeeForm.skypeId.value.trim();
     
     let flag=true;
     if (validateNameString(firstName).length !== 0){
-        const errMessageElement = document.getElementById("editform-firstname-error");
+        const errMessageElement = document.getElementById("firstname-error");
         errMessageElement.style.display="block";
         errMessageElement.innerText=`${validateNameString(firstName)}`;
-        editForm.firstName.value = firstName;
+        employeeForm.firstName.value = firstName;
         flag=false;
     } else{
-        document.getElementById("editform-firstname-error").style.display="none";
+        document.getElementById("firstname-error").style.display="none";
     }
     if (validateNameString(lastName).length !== 0){
-        const errMessageElement = document.getElementById("editform-lastname-error");
+        const errMessageElement = document.getElementById("lastname-error");
         errMessageElement.style.display="block";
         errMessageElement.innerText=`${validateNameString(lastName)}`;
-        editForm.lastName.value = lastName;
+        employeeForm.lastName.value = lastName;
         flag=false;
     } else{
-        document.getElementById("editform-lastname-error").style.display="none";
+        document.getElementById("lastname-error").style.display="none";
     }
     if (validateEmail(email).length !== 0){
-        const errMessageElement = document.getElementById("editform-email-error");
+        const errMessageElement = document.getElementById("email-error");
         errMessageElement.style.display="block";
         errMessageElement.innerText=`${validateEmail(email)}`;
-        editForm.email.value = email;
+        employeeForm.email.value = email;
         flag=false;
     } else{
-        document.getElementById("editform-email-error").style.display="none";
+        document.getElementById("email-error").style.display="none";
     }
     if(phoneNumber.length>0 && phoneNumber.length !== 10){
-        document.getElementById("editform-phone-no-error").style.display="block";
-        editForm.phoneNumber.value = phoneNumber;
+        employeeForm.phoneNumber.value = phoneNumber;
+        document.getElementById("phone-no-error").style.display="block";
         flag=false;
     } else{
-        document.getElementById("editform-phone-no-error").style.display="none";
+        document.getElementById("phone-no-error").style.display="none";
     }
     if(skypeId.length>0 && validateSkypeId(skypeId).length !== 0){
-        const errMessageElement = document.getElementById("editform-skype-id-error");
+        const errMessageElement = document.getElementById("skype-id-error");
         errMessageElement.style.display="block";
         errMessageElement.innerText=`${validateSkypeId(skypeId)}`;
-        editForm.skypeId.value = skypeId;
+        employeeForm.skypeId.value = skypeId;
         flag=false;
     } else{
-        document.getElementById("editform-skype-id-error").style.display="none";
+        document.getElementById("skype-id-error").style.display="none";
     }
 
     if(flag){
-        let employee,index;
-        for(const [i,v] of employees.entries()){
-            if(v.id===id){
-                employee=v;
-                index=i;
-                break;
-            }
+        if(id!==""){
+            editEmployee(id,firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
+            displayPopup("Updated");
+            displayEmployeeDetails(id);
+        } else {
+            createEmployee(firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId);
+            displayPopup("Saved");
+            employeeForm.reset();
+            modal.style.display="none";
         }
-    
-        let temp = getDepartments();
-        temp[employee.department]-=1;
-        temp[department]+=1;
-        setDepartments(temp);
-    
-        temp = getOffices();
-        temp[employee.office]-=1;
-        temp[office]+=1;
-        setOffices(temp);
-    
-        temp = getJobTitles();
-        temp[employee.jobTitle]-=1;
-        temp[jobTitle]+=1;
-        setJobTitles(temp);
-    
-        employee.firstName = firstName
-        employee.lastName = lastName
-        employee.department = department
-        employee.email = email
-        employee.jobTitle = jobTitle
-        employee.office= office
-        employee.phoneNumber = phoneNumber
-        employee.skypeId = skypeId
-        employee.preferredName = employee.firstName+" "+employee.lastName;
-    
-        employees.splice(index,employee);
-    
-        setEmployees(employees);
-        const updatedPopup = document.createElement("div");
-        updatedPopup.classList.add("popup");
-        updatedPopup.id="updated-popup";
-        updatedPopup.innerHTML=`<p>Updated</p>`;
-        document.body.appendChild(updatedPopup);
-        setTimeout(() => updatedPopup.remove(),3000);
+
         displayOffices();
         displayDepartments();
         displayJobTitles();
         searchAndFilterEmployees();
-        displayEmployeeDetails(id);
     }
-    
 }
 
-function errMessage(ele,msg){
-    ele.innerText=`${msg}`;
-    ele.style.display="block";
-    setTimeout(() => {ele.style.display="none"},5000);
+function editEmployee(id,firstName,lastName,email,jobTitle,office,department,phoneNumber,skypeId){
+    let employees = getEmployees();
+    let employee,index;
+    for(const [i,v] of employees.entries()){
+        if(v.id===id){
+            employee=v;
+            index=i;
+            break;
+        }
+    }
+
+    let temp = getDepartments();
+    temp[employee.department]-=1;
+    temp[department]+=1;
+    setDepartments(temp);
+
+    temp = getOffices();
+    temp[employee.office]-=1;
+    temp[office]+=1;
+    setOffices(temp);
+
+    temp = getJobTitles();
+    temp[employee.jobTitle]-=1;
+    temp[jobTitle]+=1;
+    setJobTitles(temp);
+
+    employee.firstName = firstName
+    employee.lastName = lastName
+    employee.department = department
+    employee.email = email
+    employee.jobTitle = jobTitle
+    employee.office= office
+    employee.phoneNumber = phoneNumber
+    employee.skypeId = skypeId
+    employee.preferredName = employee.firstName+" "+employee.lastName;
+
+    employees.splice(index,employee);
+    setEmployees(employees);
 }
 
 function toKebabCase(str){
@@ -632,21 +574,21 @@ function displayDepartments(){
     const departments = getDepartments();
     const moreCategoryOptions = document.createElement("span");
     moreCategoryOptions.classList.add("hide");
-    let c=0;
+    let displayCount=0;
 
     for(key in departments){
         const categoryOption = document.createElement("li");
         const id = toKebabCase(key);
         categoryOption.innerHTML=`<input type="radio" name="department" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${departments[key]})</label>`
-        c+=1;
-        if(c<=maxDisplayCount){
+        displayCount+=1;
+        if(displayCount<=maxDisplayCount){
             departmentFilter.appendChild(categoryOption);
         } else {
             moreCategoryOptions.appendChild(categoryOption);
         }
     }
     
-    if(c>maxDisplayCount){
+    if(displayCount>maxDisplayCount){
         const viewMore = document.getElementById("department-view-more");
         const viewLess = document.getElementById("department-view-less");
         
@@ -673,21 +615,21 @@ function displayOffices(){
     const offices = getOffices();
     const moreCategoryOptions = document.createElement("span");
     moreCategoryOptions.classList.add("hide");
-    let c=0;
+    let displayCount=0;
 
     for(key in offices){
         const categoryOption = document.createElement("li");
         const id = toKebabCase(key);
         categoryOption.innerHTML=`<input type="radio" name="office" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${offices[key]})</label>`
-        c+=1;
-        if(c<=maxDisplayCount){
+        displayCount+=1;
+        if(displayCount<=maxDisplayCount){
             officeFilter.appendChild(categoryOption);
         } else {
             moreCategoryOptions.appendChild(categoryOption);
         }
     }
     
-    if(c>maxDisplayCount){
+    if(displayCount>maxDisplayCount){
         const viewMore = document.getElementById("office-view-more");
         const viewLess = document.getElementById("office-view-less");
         
@@ -714,21 +656,21 @@ function displayJobTitles(){
     const jobTitles = getJobTitles();
     const moreCategoryOptions = document.createElement("span");
     moreCategoryOptions.classList.add("hide");
-    let c=0;
+    let displayCount=0;
 
     for(key in jobTitles){
         const categoryOption = document.createElement("li");
         const id = toKebabCase(key);
         categoryOption.innerHTML=`<input type="radio" name="jobTitle" class="side-filter-radio" value="${key}" id="${id}"><label for="${id}" class="side-filter-label">${key} (${jobTitles[key]})</label>`
-        c+=1;
-        if(c<=maxDisplayCount){
+        displayCount+=1;
+        if(displayCount<=maxDisplayCount){
             jobTitleFilter.appendChild(categoryOption);
         } else {
             moreCategoryOptions.appendChild(categoryOption);
         }
     }
     
-    if(c>maxDisplayCount){
+    if(displayCount>maxDisplayCount){
         const viewMore = document.getElementById("job-title-view-more");
         const viewLess = document.getElementById("job-title-view-less");
         
