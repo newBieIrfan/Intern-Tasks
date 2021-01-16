@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Levenim MT';
+  src: url("./fonts/LevenimMT.eot");
+  src: url("./fonts/LevenimMT.eot?#iefix") format("embedded-opentype"), url("./fonts/LevenimMT.woff2") format("woff2"), url("./fonts/LevenimMT.woff") format("woff"), url("./fonts/LevenimMT.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; }
+
+header {
+  background-color: #3399cc;
+}
+
+.brand-name {
+  font-family: Levenim MT;
+}
+
+nav {
+  background-color: #333333;
+}
+nav a {
+  font-family: Calibri;
+}
+
+.blog-icon {
+  height: 30px;
+  width: 30px;
+}
+
+main{
+	width: 80%;
+}
+
+.news-header {
+  font-family: Levenim MT;}
+
+.news-text {
+  list-style-type: "-";
+  font-family: gadugi;}
+
+.welcome-header{
+  font-family: Arial;
+}
+
+.welcome-text {
+  font-family: Calibri;
+}
